@@ -7,28 +7,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Fleves Music</title>
-    
+
     <link rel="stylesheet" href="style.css">
     <script src="app.js" defer></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
 </head>
 
 <body>
+    <header class="topbar">
 
-    <aside class="sidebar">
-        <div class="logo">
-            🎵 Fleves Music
+        <div class="topbar-text">
+
+            <h1>
+                Descubra novas músicas 🎧
+            </h1>
+
+            <p>
+                Streaming e downloads ilimitados
+            </p>
+
         </div>
 
-        <nav>
-            <button>🏠 Início</button>
-            <button id="trendingBtn">🔥 Trending</button>
-            <button id="favoritosBtn">❤️ Favoritos</button>
-        </nav>
+        <div class="search-box">
 
-    </aside>
+            <input type="text" id="search" placeholder="Pesquisar artistas ou músicas...">
 
+            <button onclick="searchMusic()">
+                Buscar
+            </button>
+
+        </div>
+
+    </header>
+    
     <main class="main-content">
         <header>
             <div class="search-box">
@@ -46,15 +59,30 @@
     </main>
 
     <footer class="player">
-        <div class="player-info">
-            <div>
-                <h3 id="now-playing">Nenhuma música</h3>
 
-                <p id="artist-playing">---</p>
+        <div class="player-left">
+
+            <div class="music-disc"></div>
+
+            <div class="music-info">
+
+                <h3 id="now-playing">
+                    Nenhuma música
+                </h3>
+
+                <p id="artist-playing">
+                    Escolha uma música
+                </p>
+
             </div>
+
         </div>
 
-        <audio id="player" controls></audio>
+        <div class="player-center">
+
+            <audio id="player" controls></audio>
+
+        </div>
 
     </footer>
 
