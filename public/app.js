@@ -36,7 +36,8 @@ function renderResults(list) {
                 <small>${song.duration}</small>
 
                 <div class="actions">
-                    <button class="play-btn"> ▶ </button>
+                <button class="play-btn"> ▶ </button>
+                <button class="favorite-btn">❤️</button>
 
                     <a class="download-btn"
                         href="/api/download?url=${encodeURIComponent(song.url)}"> ⬇ Baixar
@@ -59,6 +60,12 @@ function renderResults(list) {
   });
 }
 
+
+card.querySelector(".favorite-btn").onclick = () => {
+
+  saveFavorite(song);
+};
+
 // FAVORITOS
 function getFavorites() {
   return JSON.parse(localStorage.getItem("favorites")) || [];
@@ -67,7 +74,7 @@ function getFavorites() {
 function saveFavorite(song) {
   let favorites = getFavorites();
 
-  const exists = favorites.find(s => s.url === song.url );
+  const exists = favorites.find(s => s.url === song.url);
 
   if (exists) {
     favorites = favorites.filter(s => s.url !== song.url);
@@ -76,7 +83,7 @@ function saveFavorite(song) {
     favorites.push(song);
   }
 
-  localStorage.setItem( "favorites", JSON.stringify(favorites));
+  localStorage.setItem("favorites", JSON.stringify(favorites));
 }
 
 function loadFavorites() {
@@ -100,7 +107,7 @@ async function loadTrending() {
 
   const random = trends[Math.floor(Math.random() * trends.length)];
 
-  const res = await fetch( `/api/search?q=${encodeURIComponent(random)}`);
+  const res = await fetch(`/api/search?q=${encodeURIComponent(random)}`);
   const data = await res.json();
 
   renderResults(data);
