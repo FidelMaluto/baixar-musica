@@ -157,6 +157,17 @@ header {
     cursor: pointer;
 }
 
+.favorite-btn{
+    background:#ef4444;
+    border:none;
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    color:white;
+    cursor:pointer;
+    font-size:18px;
+}
+
 .download-btn {
     color: white;
     text-decoration: none;

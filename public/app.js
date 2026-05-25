@@ -41,9 +41,9 @@ function renderResults(list) {
 
                 <button class="favorite-btn">❤️</button>
 
-                <aclass="download-btn"
+                <a class="download-btn"
                     href="/api/download?url=${encodeURIComponent(song.url)}">⬇ Baixar
-                </aclass=>
+                </a>
             </div>
 
         </div>
