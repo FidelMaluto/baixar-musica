@@ -1,28 +1,15 @@
-const results =
-  document.getElementById("results");
-
-const player =
-  document.getElementById("player");
+const results = document.getElementById("results");
+const player = document.getElementById("player");
 
 async function searchMusic() {
-
-  const q =
-    document
-      .getElementById("search")
-      .value;
+  const q = document.getElementById("search").value;
 
   if (!q) return;
 
-  results.innerHTML =
-    "<h2>Pesquisando...</h2>";
+  results.innerHTML = "<h2>Pesquisando...</h2>";
 
-  const res =
-    await fetch(
-      `/api/search?q=${encodeURIComponent(q)}`
-    );
-
-  const data =
-    await res.json();
+  const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+  const data = await res.json();
 
   renderResults(data);
 }
@@ -33,8 +20,7 @@ function renderResults(list) {
 
   list.forEach(song => {
 
-    const card =
-      document.createElement("div");
+    const card = document.createElement("div");
 
     card.className = "song";
 
@@ -43,7 +29,6 @@ function renderResults(list) {
             <img src="${song.thumbnail}">
 
             <div class="song-content">
-
                 <h3>${song.title}</h3>
 
                 <p>${song.author}</p>
@@ -51,19 +36,12 @@ function renderResults(list) {
                 <small>${song.duration}</small>
 
                 <div class="actions">
+                    <button class="play-btn"> ▶ </button>
 
-                    <button class="play-btn">
-                        ▶
-                    </button>
-
-                    <a
-                        class="download-btn"
-                        href="/api/download?url=${encodeURIComponent(song.url)}">
-                        ⬇ Baixar
+                    <a class="download-btn"
+                        href="/api/download?url=${encodeURIComponent(song.url)}"> ⬇ Baixar
                     </a>
-
                 </div>
-
             </div>
         `;
 
@@ -71,18 +49,12 @@ function renderResults(list) {
       .querySelector(".play-btn")
       .onclick = () => {
 
-        player.src =
-          `/api/stream?url=${encodeURIComponent(song.url)}`;
+        player.src = `/api/stream?url=${encodeURIComponent(song.url)}`;
 
         player.play();
 
-        document
-          .getElementById("now-playing")
-          .textContent = song.title;
-
-        document
-          .getElementById("artist-playing")
-          .textContent = song.author;
+        document.getElementById("now-playing").textContent = song.title;
+        document.getElementById("artist-playing").textContent = song.author;
       };
 
     results.appendChild(card);
