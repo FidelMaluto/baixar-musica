@@ -17,34 +17,40 @@ async function searchMusic() {
 function renderResults(list) {
 
   results.innerHTML = "";
-
   list.forEach(song => {
 
-    const card = document.createElement("div");
+    const card =
+      document.createElement("div");
 
     card.className = "song";
 
     card.innerHTML = `
 
-            <img src="${song.thumbnail}">
+        <img src="${song.thumbnail}">
 
-            <div class="song-content">
-                <h3>${song.title}</h3>
+        <div class="song-content">
 
-                <p>${song.author}</p>
+            <h3>${song.title}</h3>
 
-                <small>${song.duration}</small>
+            <p>${song.author}</p>
 
-                <div class="actions">
-                <button class="play-btn"> ▶ </button>
+            <small>${song.duration}</small>
+
+            <div class="actions">
+                <button class="play-btn"> ▶</button>
+
                 <button class="favorite-btn">❤️</button>
 
-                    <a class="download-btn"
-                        href="/api/download?url=${encodeURIComponent(song.url)}"> ⬇ Baixar
-                    </a>
-                </div>
+                <aclass="download-btn"
+                    href="/api/download?url=${encodeURIComponent(song.url)}">⬇ Baixar
+                </aclass=>
             </div>
-        `;
+
+        </div>
+    `;
+
+
+    // PLAY
 
     card.querySelector(".play-btn").onclick = () => {
 
@@ -56,15 +62,17 @@ function renderResults(list) {
       document.getElementById("artist-playing").textContent = song.author;
     };
 
+
+    // FAVORITO
+    card.querySelector(".favorite-btn").onclick = () => {
+
+      saveFavorite(song);
+    };
+
     results.appendChild(card);
   });
+
 }
-
-
-card.querySelector(".favorite-btn").onclick = () => {
-
-  saveFavorite(song);
-};
 
 // FAVORITOS
 function getFavorites() {
@@ -115,5 +123,5 @@ async function loadTrending() {
 
 
 // BOTÕES
-document.getElementById("favoritesBtn").onclick = loadFavorites;
+document.getElementById("favoritosBtn").onclick = loadFavorites;
 document.getElementById("trendingBtn").onclick = loadTrending;
