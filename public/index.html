@@ -9,54 +9,115 @@
     <title>Fleves Music</title>
 
     <link rel="stylesheet" href="style.css">
+
     <script src="app.js" defer></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
 </head>
 
 <body>
-    <header class="topbar">
 
-        <div class="topbar-text">
+    <!-- SIDEBAR -->
 
-            <h1>
-                Descubra novas músicas 🎧
-            </h1>
+    <aside class="sidebar">
+
+        <div>
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    🎵
+                </div>
+
+                <div>
+
+                    <h2>Fleves</h2>
+
+                    <p>
+                        Music Streaming
+                    </p>
+
+                </div>
+
+            </div>
+
+            <nav>
+
+                <button class="nav-btn active">
+                    🏠 <span>Início</span>
+                </button>
+
+                <button id="trendingBtn" class="nav-btn">
+                    🔥 <span>Trending</span>
+                </button>
+
+                <button id="favoritosBtn" class="nav-btn">
+                    ❤️ <span>Favoritos</span>
+                </button>
+
+            </nav>
+
+        </div>
+
+        <div class="sidebar-footer">
 
             <p>
-                Streaming e downloads ilimitados
+                © 2026 Fleves Music
             </p>
 
         </div>
 
-        <div class="search-box">
+    </aside>
 
-            <input type="text" id="search" placeholder="Pesquisar artistas ou músicas...">
+    <!-- MAIN -->
 
-            <button onclick="searchMusic()">
-                Buscar
-            </button>
-
-        </div>
-
-    </header>
-    
     <main class="main-content">
-        <header>
-            <div class="search-box">
-                <input type="text" id="search" placeholder="Pesquisar músicas...">
-                <button onclick="searchMusic()">Buscar</button>
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+                    Descubra novas músicas 🎧
+                </h1>
+
+                <p>
+                    Streaming e downloads ilimitados
+                </p>
+
             </div>
+
+            <div class="search-box">
+
+                <input type="text" id="search" placeholder="Pesquisar músicas ou artistas...">
+
+                <button onclick="searchMusic()">
+                    Buscar
+                </button>
+
+            </div>
+
         </header>
 
+        <!-- RESULTS -->
+
         <section>
-            <h2 class="section-title">Resultados</h2>
+
+            <h2 class="section-title">
+                Resultados
+            </h2>
 
             <div id="results" class="songs-grid"></div>
+
         </section>
 
     </main>
+
+    <!-- PLAYER -->
 
     <footer class="player">
 
@@ -78,11 +139,7 @@
 
         </div>
 
-        <div class="player-center">
-
-            <audio id="player" controls></audio>
-
-        </div>
+        <audio id="player" controls></audio>
 
     </footer>
 
