@@ -1,0 +1,15 @@
+node_modules/
+
+music/
+temp/
+bin/
+
+*.mp3
+*.wav
+*.ogg
+*.m4a
+
+dist/
+
+uploads/
+.cache/

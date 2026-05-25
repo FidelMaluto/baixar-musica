@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "compression": "^1.8.1",
+    "cors": "^2.8.6",
+    "express": "^5.1.0",
+    "helmet": "^8.2.0",
+    "multer": "^2.1.1",
+    "music-metadata": "^11.12.3",
+    "uuid": "^14.0.0",
+    "yt-search": "^2.13.1",
+    "ytdl-core": "^4.11.5"
+  }
+}
