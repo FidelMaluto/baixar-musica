@@ -47,14 +47,66 @@ function renderResults(list) {
 
     card.querySelector(".play-btn").onclick = () => {
 
-        player.src = `/api/stream?url=${encodeURIComponent(song.url)}`;
+      player.src = `/api/stream?url=${encodeURIComponent(song.url)}`;
 
-        player.play();
+      player.play();
 
-        document.getElementById("now-playing").textContent = song.title;
-        document.getElementById("artist-playing").textContent = song.author;
-      };
+      document.getElementById("now-playing").textContent = song.title;
+      document.getElementById("artist-playing").textContent = song.author;
+    };
 
     results.appendChild(card);
   });
 }
+
+// FAVORITOS
+function getFavorites() {
+  return JSON.parse(localStorage.getItem("favorites")) || [];
+}
+
+function saveFavorite(song) {
+  let favorites = getFavorites();
+
+  const exists = favorites.find(s => s.url === song.url );
+
+  if (exists) {
+    favorites = favorites.filter(s => s.url !== song.url);
+
+  } else {
+    favorites.push(song);
+  }
+
+  localStorage.setItem( "favorites", JSON.stringify(favorites));
+}
+
+function loadFavorites() {
+  const favorites = getFavorites();
+
+  renderResults(favorites);
+}
+
+
+// TRENDING
+async function loadTrending() {
+  const trends = [
+    "Burna Boy",
+    "C4 Pedro",
+    "Chelsea Dinorath",
+    "Drake",
+    "Rema",
+    "Calema",
+    "The Weeknd"
+  ];
+
+  const random = trends[Math.floor(Math.random() * trends.length)];
+
+  const res = await fetch( `/api/search?q=${encodeURIComponent(random)}`);
+  const data = await res.json();
+
+  renderResults(data);
+}
+
+
+// BOTÕES
+document.getElementById("favoritesBtn").onclick = loadFavorites;
+document.getElementById("trendingBtn").onclick = loadTrending;
