@@ -45,9 +45,7 @@ function renderResults(list) {
             </div>
         `;
 
-    card
-      .querySelector(".play-btn")
-      .onclick = () => {
+    card.querySelector(".play-btn").onclick = () => {
 
         player.src = `/api/stream?url=${encodeURIComponent(song.url)}`;
 
