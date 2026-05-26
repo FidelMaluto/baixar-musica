@@ -80,49 +80,101 @@ app.get("/api/stream", async (req, res) => {
 
 // DOWNLOAD
 app.get("/api/download", async (req, res) => {
+
     try {
+
         const url = req.query.url;
 
         if (!url) {
-            return res.status(400).send("URL inválida");
+
+            return res
+            .status(400)
+            .send("URL inválida");
         }
 
-        const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
+        const ytDlpPath =
+            path.join(
+                __dirname,
+                "bin",
+                "yt-dlp.exe"
+            );
 
-        // Buscando informações do vídeo!!
-        const getTitulo = spawn(ytDlpPath, ["--print", "%(uploader)s -(title)s", url]);
+        // PEGAR TÍTULO
+
+        const getTitulo = spawn(
+            ytDlpPath,
+            [
+                "--print",
+                "%(uploader)s - %(title)s",
+                url
+            ]
+        );
 
         let musicaNome = "";
 
         getTitulo.stdout.on("data", data => {
+
             musicaNome += data.toString();
         });
 
         getTitulo.on("close", () => {
-            // Limpar caracteres inválidos
-            musicaNome = musicaNome.trim().replace(/[\\/:*?"<>|]/g, "");
 
-            if(!musicaNome){
-                musicaNome = "Deby_music";
+            // LIMPAR NOME
+
+            musicaNome = musicaNome
+            .trim()
+            .replace(/[\\/:*?"<>|]/g, "");
+
+            if (!musicaNome) {
+
+                musicaNome = "Fleves_Music";
             }
-        })
-        
-        // Cabeçalho
-        res.setHeader("Content-Disposition", `attachment; filename="${musicaNome}"`);
-        res.setHeader("Content-Type", "audio/mpeg");
-        // Stream
-        const ytDlp = spawn(ytDlpPath, ["-x", "--audio-format", "mp3", "-o", "-", url]);
 
-        ytDlp.stdout.pipe(res);
+            // HEADERS DEVEM FICAR AQUI
 
-        ytDlp.stderr.on("data", data => {
-            console.log("yt-dlp erro:", data.toString());
+            res.setHeader(
+                "Content-Disposition",
+                `attachment; filename="${musicaNome}.mp3"`
+            );
+
+            res.setHeader(
+                "Content-Type",
+                "audio/mpeg"
+            );
+
+            // DOWNLOAD
+
+            const ytDlp = spawn(
+                ytDlpPath,
+                [
+                    "-x",
+                    "--audio-format",
+                    "mp3",
+                    "-o",
+                    "-",
+                    url
+                ]
+            );
+
+            ytDlp.stdout.pipe(res);
+
+            ytDlp.stderr.on("data", data => {
+
+                console.log(
+                    "yt-dlp erro:",
+                    data.toString()
+                );
+            });
+
         });
 
     } catch (err) {
+
         console.log(err);
 
-        res.status(500).send("Erro download");
+        res
+        .status(500)
+        .send("Erro download");
     }
 });
 
