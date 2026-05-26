@@ -9,7 +9,6 @@
     <title>Fleves Music</title>
 
     <link rel="stylesheet" href="style.css">
-
     <script src="app.js" defer></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -20,31 +19,19 @@
 <body>
 
     <!-- SIDEBAR -->
-
     <aside class="sidebar">
-
         <div>
-
             <div class="logo">
-
-                <div class="logo-icon">
-                    🎵
-                </div>
+                <div class="logo-icon">🎵</div>
 
                 <div>
-
                     <h2>Fleves</h2>
 
-                    <p>
-                        Music Streaming
-                    </p>
-
+                    <p>Music Streaming</p>
                 </div>
-
             </div>
 
             <nav>
-
                 <button class="nav-btn active">
                     🏠 <span>Início</span>
                 </button>
@@ -56,87 +43,51 @@
                 <button id="favoritosBtn" class="nav-btn">
                     ❤️ <span>Favoritos</span>
                 </button>
-
             </nav>
-
         </div>
 
         <div class="sidebar-footer">
-
-            <p>
-                © 2026 Fleves Music
-            </p>
-
+            <p>© 2026 Fleves Music</p>
         </div>
-
     </aside>
 
     <!-- MAIN -->
-
     <main class="main-content">
 
         <!-- TOPBAR -->
-
         <header class="topbar">
-
             <div>
+                <h1>Descubra novas músicas 🎧</h1>
 
-                <h1>
-                    Descubra novas músicas 🎧
-                </h1>
-
-                <p>
-                    Streaming e downloads ilimitados
-                </p>
-
+                <p>Streaming e downloads ilimitados</p>
             </div>
 
             <div class="search-box">
-
                 <input type="text" id="search" placeholder="Pesquisar músicas ou artistas...">
 
-                <button onclick="searchMusic()">
-                    Buscar
-                </button>
-
+                <button onclick="searchMusic()">Buscar</button>
             </div>
-
         </header>
 
-        <!-- RESULTS -->
-
+        <!-- RESULTADOS -->
         <section>
-
-            <h2 class="section-title">
-                Resultados
-            </h2>
+            <h2 class="section-title">Resultados</h2>
 
             <div id="results" class="songs-grid"></div>
-
         </section>
-
     </main>
 
     <!-- PLAYER -->
-
     <footer class="player">
-
         <div class="player-left">
-
             <div class="music-disc"></div>
 
             <div class="music-info">
+                <h3 id="now-playing"> Nenhuma música</h3>
 
-                <h3 id="now-playing">
-                    Nenhuma música
-                </h3>
-
-                <p id="artist-playing">
-                    Escolha uma música
-                </p>
+                <p id="artist-playing">Escolha uma música</p>
 
             </div>
-
         </div>
 
         <audio id="player" controls></audio>
