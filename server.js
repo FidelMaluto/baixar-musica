@@ -88,8 +88,8 @@ app.get("/api/download", async (req, res) => {
         if (!url) {
 
             return res
-            .status(400)
-            .send("URL inválida");
+                .status(400)
+                .send("URL inválida");
         }
 
         const ytDlpPath =
@@ -122,8 +122,22 @@ app.get("/api/download", async (req, res) => {
             // LIMPAR NOME
 
             musicaNome = musicaNome
-            .trim()
-            .replace(/[\\/:*?"<>|]/g, "");
+                .trim()
+
+                // remover caracteres inválidos
+                .replace(/[\\/:*?"<>|]/g, "")
+
+                // remover emojis
+                .replace(
+                    /[\u{1F600}-\u{1F6FF}]/gu,
+                    ""
+                )
+
+                // remover caracteres estranhos
+                .replace(/[^\w\s.-]/gi, "")
+
+                // limitar tamanho
+                .substring(0, 120);
 
             if (!musicaNome) {
 
@@ -173,8 +187,8 @@ app.get("/api/download", async (req, res) => {
         console.log(err);
 
         res
-        .status(500)
-        .send("Erro download");
+            .status(500)
+            .send("Erro download");
     }
 });
 
