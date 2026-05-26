@@ -3,34 +3,21 @@ const cors = require("cors");
 const yts = require("yt-search");
 const path = require("path");
 
-process.env.FFMPEG_PATH = path.join(
-    __dirname,
-    "bin",
-    "ffmpeg.exe"
-);
-
-process.env.FFPROBE_PATH = path.join(
-    __dirname, 
-    "bin",
-    "ffprobe.exe"
-);
+process.env.FFMPEG_PATH = path.join(__dirname, "bin", "ffmpeg.exe");
+process.env.FFPROBE_PATH = path.join(__dirname, "bin", "ffprobe.exe");
 
 const { spawn } = require("child_process");
 
 const app = express();
 
 app.use(cors());
-
 app.use(express.static("./public"));
 
 const PORT = 3000;
 
-
 // PESQUISAR MÚSICAS
 app.get("/api/search", async (req, res) => {
-
     try {
-
         const q = req.query.q;
 
         if (!q) {
@@ -42,24 +29,17 @@ app.get("/api/search", async (req, res) => {
         const songs = result.videos
             .slice(0, 20)
             .map(v => ({
-
                 title: v.title,
-
                 duration: v.timestamp,
-
                 views: v.views,
-
                 thumbnail: v.thumbnail,
-
                 url: v.url,
-
                 author: v.author.name
             }));
 
         res.json(songs);
 
     } catch (err) {
-
         console.log(err);
 
         res.status(500).json({
@@ -71,129 +51,62 @@ app.get("/api/search", async (req, res) => {
 
 // STREAM
 app.get("/api/stream", async (req, res) => {
-
     try {
-
         const url = req.query.url;
 
         if (!url) {
-
-            return res
-                .status(400)
-                .send("URL inválida");
+            return res.status(400).send("URL inválida");
         }
 
-        const ytDlpPath =
-            path.join(
-                __dirname,
-                "bin",
-                "yt-dlp.exe"
-            );
+        const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
 
-        const ytDlp = spawn(
+        const ytDlp = spawn(ytDlpPath, ["-f", "bestaudio", "-o", "-", url]);
 
-            ytDlpPath,
-
-            [
-                "-f",
-                "bestaudio",
-                "-o",
-                "-",
-                url
-            ]
-        );
-
-        res.setHeader(
-            "Content-Type",
-            "audio/mpeg"
-        );
+        res.setHeader("Content-Type", "audio/mpeg");
 
         ytDlp.stdout.pipe(res);
 
         ytDlp.stderr.on("data", data => {
-
-            console.log(
-                "yt-dlp erro:",
-                data.toString()
-            );
+            console.log("yt-dlp erro:", data.toString());
         });
 
     } catch (err) {
-
         console.log(err);
 
-        res
-            .status(500)
-            .send("Erro no stream");
+        res.status(500).send("Erro no stream");
     }
 });
 
 // DOWNLOAD
 app.get("/api/download", async (req, res) => {
-
     try {
-
         const url = req.query.url;
 
         if (!url) {
-
-            return res
-                .status(400)
-                .send("URL inválida");
+            return res.status(400).send("URL inválida");
         }
 
-        const ytDlpPath =
-            path.join(
-                __dirname,
-                "bin",
-                "yt-dlp.exe"
-            );
+        const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
 
-        res.setHeader(
-            "Content-Disposition",
-            'attachment; filename="music.mp3"'
-        );
+        res.setHeader("Content-Disposition", 'attachment; filename="music.mp3"');
 
-        res.setHeader(
-            "Content-Type",
-            "audio/mpeg"
-        );
+        res.setHeader("Content-Type", "audio/mpeg");
 
-        const ytDlp = spawn(
-
-            ytDlpPath,
-
-            [
-                "-x",
-                "--audio-format",
-                "mp3",
-                "-o",
-                "-",
-                url
-            ]
-        );
+        const ytDlp = spawn(ytDlpPath, ["-x", "--audio-format", "mp3", "-o", "-", url]);
 
         ytDlp.stdout.pipe(res);
 
         ytDlp.stderr.on("data", data => {
-
-            console.log(
-                "yt-dlp erro:",
-                data.toString()
-            );
+            console.log("yt-dlp erro:", data.toString());
         });
 
     } catch (err) {
-
         console.log(err);
 
-        res
-            .status(500)
-            .send("Erro download");
+        res.status(500).send("Erro download");
     }
 });
 
 app.listen(PORT, () => {
-
     console.log(`🚀 Fleves Music: http://localhost:${PORT}`);
 });
