@@ -7,6 +7,7 @@ process.env.FFMPEG_PATH = path.join(__dirname, "bin", "ffmpeg.exe");
 process.env.FFPROBE_PATH = path.join(__dirname, "bin", "ffprobe.exe");
 
 const { spawn } = require("child_process");
+const { get } = require("http");
 
 const app = express();
 
@@ -88,10 +89,28 @@ app.get("/api/download", async (req, res) => {
 
         const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
 
-        res.setHeader("Content-Disposition", 'attachment; filename="music.mp3"');
+        // Buscando informações do vídeo!!
+        const getTitulo = spawn(ytDlpPath, ["--print", "%(uploader)s -(title)s", url]);
 
+        let musicaNome = "";
+
+        getTitulo.stdout.on("data", data => {
+            musicaNome += data.toString();
+        });
+
+        getTitulo.on("close", () => {
+            // Limpar caracteres inválidos
+            musicaNome = musicaNome.trim().replace(/[\\/:*?"<>|]/g, "");
+
+            if(!musicaNome){
+                musicaNome = "Deby_music";
+            }
+        })
+        
+        // Cabeçalho
+        res.setHeader("Content-Disposition", `attachment; filename="${musicaNome}"`);
         res.setHeader("Content-Type", "audio/mpeg");
-
+        // Stream
         const ytDlp = spawn(ytDlpPath, ["-x", "--audio-format", "mp3", "-o", "-", url]);
 
         ytDlp.stdout.pipe(res);
