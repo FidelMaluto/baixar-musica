@@ -80,35 +80,18 @@ app.get("/api/stream", async (req, res) => {
 
 // DOWNLOAD
 app.get("/api/download", async (req, res) => {
-
     try {
-
         const url = req.query.url;
 
         if (!url) {
 
-            return res
-                .status(400)
-                .send("URL inválida");
+            return res.status(400).send("URL inválida");
         }
 
-        const ytDlpPath =
-            path.join(
-                __dirname,
-                "bin",
-                "yt-dlp.exe"
-            );
+        const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
 
         // PEGAR TÍTULO
-
-        const getTitulo = spawn(
-            ytDlpPath,
-            [
-                "--print",
-                "%(uploader)s - %(title)s",
-                url
-            ]
-        );
+        const getTitulo = spawn(ytDlpPath, ["--print", "%(uploader)s - %(title)s", url]);
 
         let musicaNome = "";
 
@@ -118,20 +101,13 @@ app.get("/api/download", async (req, res) => {
         });
 
         getTitulo.on("close", () => {
-
             // LIMPAR NOME
-
-            musicaNome = musicaNome
-                .trim()
-
+            musicaNome = musicaNome.trim()
                 // remover caracteres inválidos
                 .replace(/[\\/:*?"<>|]/g, "")
 
                 // remover emojis
-                .replace(
-                    /[\u{1F600}-\u{1F6FF}]/gu,
-                    ""
-                )
+                .replace(/[\u{1F600}-\u{1F6FF}]/gu, "")
 
                 // remover caracteres estranhos
                 .replace(/[^\w\s.-]/gi, "")
@@ -140,55 +116,29 @@ app.get("/api/download", async (req, res) => {
                 .substring(0, 120);
 
             if (!musicaNome) {
-
-                musicaNome = "Fleves_Music";
+                musicaNome = "Fleves_Music_Deby";
             }
 
             // HEADERS DEVEM FICAR AQUI
+            res.setHeader("Content-Disposition", `attachment; filename="${musicaNome}.mp3"`);
 
-            res.setHeader(
-                "Content-Disposition",
-                `attachment; filename="${musicaNome}.mp3"`
-            );
-
-            res.setHeader(
-                "Content-Type",
-                "audio/mpeg"
-            );
+            res.setHeader("Content-Type", "audio/mpeg");
 
             // DOWNLOAD
-
-            const ytDlp = spawn(
-                ytDlpPath,
-                [
-                    "-x",
-                    "--audio-format",
-                    "mp3",
-                    "-o",
-                    "-",
-                    url
-                ]
-            );
+            const ytDlp = spawn(ytDlpPath, ["-x", "--audio-format", "mp3", "-o", "-", url]);
 
             ytDlp.stdout.pipe(res);
 
             ytDlp.stderr.on("data", data => {
-
-                console.log(
-                    "yt-dlp erro:",
-                    data.toString()
-                );
+                console.log("yt-dlp erro:", data.toString());
             });
 
         });
 
     } catch (err) {
-
         console.log(err);
 
-        res
-            .status(500)
-            .send("Erro download");
+        res.status(500).send("Erro download");
     }
 });
 
