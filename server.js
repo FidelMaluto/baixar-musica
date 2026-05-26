@@ -52,29 +52,110 @@ app.get("/api/search", async (req, res) => {
 
 // STREAM
 app.get("/api/stream", async (req, res) => {
+
     try {
+
         const url = req.query.url;
 
         if (!url) {
-            return res.status(400).send("URL inválida");
+
+            return res
+                .status(400)
+                .send("URL inválida");
         }
 
-        const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
+        const ytDlpPath =
+            path.join(
+                __dirname,
+                "bin",
+                "yt-dlp.exe"
+            );
 
-        const ytDlp = spawn(ytDlpPath, ["-f", "bestaudio", "-o", "-", url]);
+        const ffmpegPath =
+            path.join(
+                __dirname,
+                "bin",
+                "ffmpeg.exe"
+            );
 
-        res.setHeader("Content-Type", "audio/mpeg");
+        // HEADERS
 
-        ytDlp.stdout.pipe(res);
+        res.setHeader(
+            "Content-Type",
+            "audio/mpeg"
+        );
+
+        // yt-dlp
+
+        const ytDlp = spawn(
+            ytDlpPath,
+            [
+                "--js-runtimes",
+                "node",
+
+                "--no-playlist",
+
+                "-f",
+                "ba",
+
+                "-o",
+                "-",
+
+                url
+            ]
+        );
+
+        // ffmpeg
+
+        const ffmpeg = spawn(
+            ffmpegPath,
+            [
+                "-i",
+                "pipe:0",
+
+                "-f",
+                "mp3",
+
+                "-ab",
+                "192k",
+
+                "pipe:1"
+            ]
+        );
+
+        // yt-dlp -> ffmpeg
+
+        ytDlp.stdout.pipe(
+            ffmpeg.stdin
+        );
+
+        // ffmpeg -> navegador
+
+        ffmpeg.stdout.pipe(res);
 
         ytDlp.stderr.on("data", data => {
-            console.log("yt-dlp erro:", data.toString());
+
+            console.log(
+                "yt-dlp:",
+                data.toString()
+            );
+        });
+
+        ffmpeg.stderr.on("data", data => {
+
+            console.log(
+                "ffmpeg:",
+                data.toString()
+            );
         });
 
     } catch (err) {
+
         console.log(err);
 
-        res.status(500).send("Erro no stream");
+        res
+            .status(500)
+            .send("Erro stream");
     }
 });
 
