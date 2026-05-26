@@ -15,44 +15,32 @@ async function searchMusic() {
 }
 
 function renderResults(list) {
-
   results.innerHTML = "";
-  list.forEach(song => {
 
-    const card =
-      document.createElement("div");
+  list.forEach(song => {
+    const card = document.createElement("div");
 
     card.className = "song";
 
     card.innerHTML = `
-
         <img src="${song.thumbnail}">
 
         <div class="song-content">
-
             <h3>${song.title}</h3>
-
             <p>${song.author}</p>
-
             <small>${song.duration}</small>
 
             <div class="actions">
                 <button class="play-btn"> ▶</button>
-
                 <button class="favorite-btn">❤️</button>
 
-                <a class="download-btn"
-                    href="/api/download?url=${encodeURIComponent(song.url)}"> ⬇  </a>
+                <a class="download-btn" href="/api/download?url=${encodeURIComponent(song.url)}"> ⬇ </a>
             </div>
-
         </div>
     `;
 
-
     // PLAY
-
     card.querySelector(".play-btn").onclick = () => {
-
       player.src = `/api/stream?url=${encodeURIComponent(song.url)}`;
 
       player.play();
@@ -64,7 +52,6 @@ function renderResults(list) {
 
     // FAVORITO
     card.querySelector(".favorite-btn").onclick = () => {
-
       saveFavorite(song);
     };
 
@@ -99,27 +86,24 @@ function loadFavorites() {
   renderResults(favorites);
 }
 
-
 // TRENDING
 async function loadTrending() {
   const trends = [
-    "Burna Boy",
+    "Força Suprema",
     "C4 Pedro",
     "Chelsea Dinorath",
-    "Drake",
+    "Maria Benguela",
     "Rema",
     "Calema",
-    "The Weeknd"
+    "Michael Jackson"
   ];
 
   const random = trends[Math.floor(Math.random() * trends.length)];
-
   const res = await fetch(`/api/search?q=${encodeURIComponent(random)}`);
   const data = await res.json();
 
   renderResults(data);
 }
-
 
 // BOTÕES
 document.getElementById("favoritosBtn").onclick = loadFavorites;
