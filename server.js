@@ -52,110 +52,46 @@ app.get("/api/search", async (req, res) => {
 
 // STREAM
 app.get("/api/stream", async (req, res) => {
-
     try {
-
         const url = req.query.url;
 
         if (!url) {
-
-            return res
-                .status(400)
-                .send("URL inválida");
+            return res.status(400).send("URL inválida");
         }
 
-        const ytDlpPath =
-            path.join(
-                __dirname,
-                "bin",
-                "yt-dlp.exe"
-            );
+        const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
 
-        const ffmpegPath =
-            path.join(
-                __dirname,
-                "bin",
-                "ffmpeg.exe"
-            );
+        const ffmpegPath = path.join(__dirname, "bin", "ffmpeg.exe");
 
         // HEADERS
-
-        res.setHeader(
-            "Content-Type",
-            "audio/mpeg"
-        );
+        res.setHeader("Content-Type", "audio/mpeg");
 
         // yt-dlp
-
-        const ytDlp = spawn(
-            ytDlpPath,
-            [
-                "--js-runtimes",
-                "node",
-
-                "--no-playlist",
-
-                "-f",
-                "ba",
-
-                "-o",
-                "-",
-
-                url
-            ]
-        );
+        const ytDlp = spawn(ytDlpPath,
+            ["--js-runtimes", "node", "--no-playlist", "-f", "ba", "-o", "-", url]);
 
         // ffmpeg
-
-        const ffmpeg = spawn(
-            ffmpegPath,
-            [
-                "-i",
-                "pipe:0",
-
-                "-f",
-                "mp3",
-
-                "-ab",
-                "192k",
-
-                "pipe:1"
-            ]
-        );
+        const ffmpeg = spawn(ffmpegPath,
+            ["-i", "pipe:0", "-f", "mp3", "-ab", "192k", "pipe:1"]);
 
         // yt-dlp -> ffmpeg
-
-        ytDlp.stdout.pipe(
-            ffmpeg.stdin
-        );
+        ytDlp.stdout.pipe(ffmpeg.stdin);
 
         // ffmpeg -> navegador
-
         ffmpeg.stdout.pipe(res);
 
         ytDlp.stderr.on("data", data => {
-
-            console.log(
-                "yt-dlp:",
-                data.toString()
-            );
+            console.log("yt-dlp:", data.toString());
         });
 
         ffmpeg.stderr.on("data", data => {
-
-            console.log(
-                "ffmpeg:",
-                data.toString()
-            );
+            console.log("ffmpeg:", data.toString());
         });
 
     } catch (err) {
-
         console.log(err);
 
-        res
-            .status(500)
-            .send("Erro stream");
+        res.status(500).send("Erro stream");
     }
 });
 
@@ -165,7 +101,6 @@ app.get("/api/download", async (req, res) => {
         const url = req.query.url;
 
         if (!url) {
-
             return res.status(400).send("URL inválida");
         }
 
@@ -177,7 +112,6 @@ app.get("/api/download", async (req, res) => {
         let musicaNome = "";
 
         getTitulo.stdout.on("data", data => {
-
             musicaNome += data.toString();
         });
 
