@@ -555,7 +555,7 @@ Aqui estão plataformas populares onde você pode hospedar o projeto. Em geral o
 2. **Conectar o repositório ao serviço de hospedagem** (Render, Railway, Vercel, Heroku) e configurar variáveis de ambiente (por exemplo `PORT` e `API_KEY`).
 3. **Se o serviço não fornece armazenamento persistente, use um bucket S3 / DigitalOcean Spaces / Backblaze B2 para armazenar arquivos de música.**
 
-Recomendações rápidas:
+Opções:
 
 * **Render** — fácil deploy via GitHub, interface clara para Web Services; documentação rápida para apps Express. citeturn0search0turn0search14
 
@@ -569,7 +569,7 @@ Recomendações rápidas:
 
 ---
 
-## Passo-a-passo mínimo para colocar online (Render example)
+## Passo-a-passo mínimo para colocar online (Render)
 
 1. Crie um repositório no GitHub e faça push do código.
 2. No Render: New → Web Service → conecte ao repositório → selecione branch `main` e o comando de start `npm start` (ou `node server.js`).
@@ -577,14 +577,3 @@ Recomendações rápidas:
 4. Deploy. O serviço fornecerá uma URL pública. Teste `GET /api/songs` nessa URL.
 
 (Referência: quickstart Render docs). citeturn0search14turn0search8
-
----
-
-## Próximos passos que eu posso fazer agora (escolha):
-
-A) Gerar todos os arquivos do projeto aqui no canvas para você baixar como ZIP;
-B) Adicionar integração com S3 (upload direto para bucket + streaming público via presigned URLs);
-C) Gerar um `README.md` com instruções passo-a-passo para deploy em Render ou Railway e comandos Git;
-D) Criar um script `dockerfile` e instruções para rodar com Docker (útil para alguns hosts).
-
-Diga qual (A/B/C/D) você quer que eu faça primeiro — eu já atualizei o documento com o novo código. Se quiser, eu executo A (gerar os arquivos e um ZIP) agora.
