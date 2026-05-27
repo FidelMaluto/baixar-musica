@@ -1,5 +1,6 @@
 {
-  "start": "node --watch server.js",
+  "name": "baixar-musica",
+  "start": "pip install yt-dlp && node --watch server.js",
   "dependencies": {
     "compression": "^1.8.1",
     "cors": "^2.8.6",
