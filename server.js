@@ -27,14 +27,20 @@ CAMINHOS
 ========================================
 */
 
-const ytDlpPath = isWindows
-    ? path.join(__dirname, "bin", "yt-dlp.exe")
-    : "yt-dlp";
-
 const ffmpegPath = isWindows
     ? path.join(__dirname, "bin", "ffmpeg.exe")
     : "ffmpeg";
 
+const ffprobePath = isWindows
+    ? path.join(__dirname, "bin", "ffprobe.exe")
+    : "ffprobe";
+
+const ytDlpPath = isWindows
+    ? path.join(__dirname, "bin", "yt-dlp.exe")
+    : "yt-dlp";
+
+process.env.FFMPEG_PATH = ffmpegPath;
+process.env.FFPROBE_PATH = ffprobePath;
 /*
 ========================================
 VERIFICAR BINÁRIOS
