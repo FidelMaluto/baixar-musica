@@ -112,7 +112,6 @@ app.get("/api/search", async (req, res) => {
 STREAM
 ========================================
 */
-
 app.get("/api/stream", async (req, res) => {
 
     try {
@@ -123,87 +122,47 @@ app.get("/api/stream", async (req, res) => {
             return res.status(400).send("URL inválida");
         }
 
+        const args = [
+            "--no-playlist",
+            "-f",
+            "bestaudio",
+            "--extract-audio",
+            "--audio-format",
+            "mp3",
+            "-o",
+            "-",
+            url
+        ];
+
+        const ytDlp = process.platform === "win32"
+
+            ? spawn(
+                path.join(__dirname, "bin", "yt-dlp.exe"),
+                args
+            )
+
+            : spawn(
+                "python3",
+                ["-m", "yt_dlp", ...args]
+            );
+
         res.setHeader("Content-Type", "audio/mpeg");
 
-        /*
-        ================================
-        YT-DLP
-        ================================
-        */
-
-        const ytDlp = spawn(
-            ytDlpPath,
-            [
-                "--no-playlist",
-                "-f",
-                "bestaudio",
-                "-o",
-                "-",
-                url
-            ]
-        );
-
-        const ffmpeg = spawn(
-            ffmpegPath,
-            [
-                "-i",
-                "pipe:0",
-                "-f",
-                "mp3",
-                "-ab",
-                "192k",
-                "pipe:1"
-            ]
-        );
-        /*
-        ================================
-        PIPE
-        ================================
-        */
-
-        ytDlp.stdout.pipe(ffmpeg.stdin);
-
-        ffmpeg.stdout.pipe(res);
-
-        /*
-        ================================
-        LOGS
-        ================================
-        */
+        ytDlp.stdout.pipe(res);
 
         ytDlp.stderr.on("data", data => {
+
             console.log("yt-dlp:", data.toString());
-        });
 
-        ffmpeg.stderr.on("data", data => {
-            console.log("ffmpeg:", data.toString());
-        });
-
-        /*
-        ================================
-        ERROS
-        ================================
-        */
-
-        ytDlp.on("error", err => {
-            console.log("Erro yt-dlp:", err);
-        });
-
-        ffmpeg.on("error", err => {
-            console.log("Erro ffmpeg:", err);
         });
 
         ytDlp.on("close", code => {
-            console.log("yt-dlp fechado:", code);
+
+            console.log("yt-dlp fechou:", code);
+
         });
 
-        ffmpeg.on("close", code => {
-            console.log("ffmpeg fechado:", code);
-        });
-
-    }
-
-    catch (err) {
+    } catch (err) {
 
         console.log(err);
 
@@ -229,55 +188,45 @@ app.get("/api/download", async (req, res) => {
             return res.status(400).send("URL inválida");
         }
 
-        /*
-        ================================
-        PEGAR TÍTULO
-        ================================
-        */
+        const argsInfo = [
+            "--print",
+            "%(uploader)s - %(title)s",
+            url
+        ];
 
-        const getTitulo = spawn(
-            ytDlpPath,
-            [
-                "--print",
-                "%(uploader)s - %(title)s",
-                url
-            ]
-        );
+        const getTitulo = process.platform === "win32"
+
+            ? spawn(
+                path.join(__dirname, "bin", "yt-dlp.exe"),
+                argsInfo
+            )
+
+            : spawn(
+                "python3",
+                ["-m", "yt_dlp", ...argsInfo]
+            );
 
         let musicaNome = "";
 
         getTitulo.stdout.on("data", data => {
+
             musicaNome += data.toString();
+
         });
 
         getTitulo.on("close", () => {
 
-            /*
-            ================================
-            LIMPAR NOME
-            ================================
-            */
-
             musicaNome = musicaNome
                 .trim()
-
                 .replace(/[\\/:*?"<>|]/g, "")
-
-                .replace(/[\u{1F600}-\u{1F6FF}]/gu, "")
-
                 .replace(/[^\w\s.-]/gi, "")
-
-                .substring(0, 120);
+                .substring(0, 100);
 
             if (!musicaNome) {
-                musicaNome = "Fleves_Music";
-            }
 
-            /*
-            ================================
-            HEADERS
-            ================================
-            */
+                musicaNome = "FlevesMusic";
+
+            }
 
             res.setHeader(
                 "Content-Disposition",
@@ -289,45 +238,41 @@ app.get("/api/download", async (req, res) => {
                 "audio/mpeg"
             );
 
-            /*
-            ================================
-            DOWNLOAD
-            ================================
-            */
+            const argsDownload = [
+                "--no-playlist",
+                "-f",
+                "bestaudio",
+                "--extract-audio",
+                "--audio-format",
+                "mp3",
+                "-o",
+                "-",
+                url
+            ];
 
-            const ytDlp = spawn(
-                ytDlpPath,
-                [
-                    "-x",
+            const ytDlp = process.platform === "win32"
 
-                    "--audio-format",
-                    "mp3",
+                ? spawn(
+                    path.join(__dirname, "bin", "yt-dlp.exe"),
+                    argsDownload
+                )
 
-                    "--audio-quality",
-                    "0",
-
-                    "-o",
-                    "-",
-
-                    url
-                ]
-            );
+                : spawn(
+                    "python3",
+                    ["-m", "yt_dlp", ...argsDownload]
+                );
 
             ytDlp.stdout.pipe(res);
 
             ytDlp.stderr.on("data", data => {
-                console.log("yt-dlp download:", data.toString());
-            });
 
-            ytDlp.on("error", err => {
-                console.log("Erro yt-dlp:", err);
+                console.log("yt-dlp erro:", data.toString());
+
             });
 
         });
 
-    }
-
-    catch (err) {
+    } catch (err) {
 
         console.log(err);
 
