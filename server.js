@@ -135,44 +135,26 @@ app.get("/api/stream", async (req, res) => {
             ytDlpPath,
             [
                 "--no-playlist",
-
                 "-f",
-                "bestaudio[ext=m4a]/bestaudio",
-
+                "bestaudio",
                 "-o",
                 "-",
-
                 url
             ]
         );
-
-        /*
-        ================================
-        FFMPEG
-        ================================
-        */
 
         const ffmpeg = spawn(
             ffmpegPath,
             [
                 "-i",
                 "pipe:0",
-
-                "-vn",
-
-                "-acodec",
-                "libmp3lame",
-
-                "-ab",
-                "192k",
-
                 "-f",
                 "mp3",
-
+                "-ab",
+                "192k",
                 "pipe:1"
             ]
         );
-
         /*
         ================================
         PIPE
