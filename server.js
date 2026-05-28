@@ -59,9 +59,11 @@ app.get("/api/stream", async (req, res) => {
             return res.status(400).send("URL inválida");
         }
 
-        const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
+        const ytDlpPath = "yt-dlp";
+        // const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
 
-        const ffmpegPath = path.join(__dirname, "bin", "ffmpeg.exe");
+        const ffmpegPath = "ffmpeg";
+        // const ffmpegPath = path.join(__dirname, "bin", "ffmpeg.exe");
 
         // HEADERS
         res.setHeader("Content-Type", "audio/mpeg");
@@ -104,7 +106,8 @@ app.get("/api/download", async (req, res) => {
             return res.status(400).send("URL inválida");
         }
 
-        const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
+        const ytDlpPath = "yt-dlp";
+        //const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
 
         // PEGAR TÍTULO
         const getTitulo = spawn(ytDlpPath, ["--print", "%(uploader)s - %(title)s", url]);
