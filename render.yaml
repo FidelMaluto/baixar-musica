@@ -1,7 +1,12 @@
 services:
+  - type: web
+    name: baixar-musica
+    env: node
 
-* type: web
-  name: baixar-musica
-  env: node
-  buildCommand: npm install && pip install yt-dlp
-  startCommand: apt-get update && apt-get install -y ffmpeg && node server.js
+    buildCommand: |
+      npm install
+      apt-get update
+      apt-get install -y ffmpeg
+      pip install yt-dlp
+
+    startCommand: node server.js
