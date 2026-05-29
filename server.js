@@ -3,293 +3,288 @@ const cors = require("cors");
 const yts = require("yt-search");
 const path = require("path");
 const fs = require("fs");
+const os = require("os");
 
 const { spawn } = require("child_process");
 
 const app = express();
 
 app.use(cors());
-app.use(express.static("./public"));
+
+app.use(express.static("public"));
 
 const PORT = process.env.PORT || 3000;
 
-/*
-========================================
-DETECTAR SISTEMA OPERACIONAL
-========================================
-*/
+const TEMP_DIR = path.join(os.tmpdir(), "fleves_music");
 
-const isWindows = process.platform === "win32";
+if (!fs.existsSync(TEMP_DIR)) {
 
-/*
-========================================
-CAMINHOS
-========================================
-*/
-
-const ffmpegPath = isWindows
-    ? path.join(__dirname, "bin", "ffmpeg.exe")
-    : "ffmpeg";
-
-const ffprobePath = isWindows
-    ? path.join(__dirname, "bin", "ffprobe.exe")
-    : "ffprobe";
-
-const ytDlpPath = isWindows
-    ? path.join(__dirname, "bin", "yt-dlp.exe")
-    : "yt-dlp";
-
-process.env.FFMPEG_PATH = ffmpegPath;
-process.env.FFPROBE_PATH = ffprobePath;
-/*
-========================================
-VERIFICAR BINÁRIOS
-========================================
-*/
-
-if (isWindows) {
-
-    if (!fs.existsSync(ytDlpPath)) {
-        console.log("❌ yt-dlp.exe não encontrado");
-    }
-
-    if (!fs.existsSync(ffmpegPath)) {
-        console.log("❌ ffmpeg.exe não encontrado");
-    }
+fs.mkdirSync(TEMP_DIR, {
+    recursive: true
+});
 
 }
 
-console.log("YT-DLP:", ytDlpPath);
-console.log("FFMPEG:", ffmpegPath);
+const isWindows = process.platform === "win32";
 
-/*
-========================================
-PESQUISA
-========================================
-*/
+const ytDlpCommand = isWindows
 
+? path.join(__dirname, "bin", "yt-dlp.exe")
+
+: "python3";
+
+// PESQUISA
 app.get("/api/search", async (req, res) => {
 
-    try {
+try {
 
-        const q = req.query.q;
+    const q = req.query.q;
 
-        if (!q) {
-            return res.json([]);
-        }
+    if (!q) {
 
-        const result = await yts(q);
-
-        const songs = result.videos
-            .slice(0, 20)
-            .map(v => ({
-                title: v.title,
-                duration: v.timestamp,
-                views: v.views,
-                thumbnail: v.thumbnail,
-                url: v.url,
-                author: v.author.name
-            }));
-
-        res.json(songs);
+        return res.json([]);
 
     }
 
-    catch (err) {
+    const result = await yts(q);
 
-        console.log(err);
+    const songs = result.videos
+        .slice(0, 20)
+        .map(v => ({
 
-        res.status(500).json({
-            error: "Erro na pesquisa"
-        });
+            title: v.title,
+            thumbnail: v.thumbnail,
+            duration: v.timestamp,
+            views: v.views,
+            url: v.url,
+            author: v.author.name
 
-    }
+        }));
+
+    res.json(songs);
+
+} catch (err) {
+
+    console.log(err);
+
+    res.status(500).json({
+        error: "Erro pesquisa"
+    });
+
+}
 
 });
 
-/*
-========================================
-STREAM
-========================================
-*/
+// STREAM
 app.get("/api/stream", async (req, res) => {
 
-    try {
+try {
 
-        const url = req.query.url;
+    const url = req.query.url;
 
-        if (!url) {
-            return res.status(400).send("URL inválida");
-        }
+    if (!url) {
 
-        const args = [
+        return res.status(400).send("URL inválida");
+
+    }
+
+    const output = path.join(
+        TEMP_DIR,
+        `stream-${Date.now()}.mp3`
+    );
+
+    const args = isWindows
+
+        ? [
             "--no-playlist",
-            "-f",
-            "bestaudio",
-            "--extract-audio",
+            "-x",
             "--audio-format",
             "mp3",
             "-o",
-            "-",
+            output,
+            url
+        ]
+
+        : [
+            "-m",
+            "yt_dlp",
+            "--no-playlist",
+            "-x",
+            "--audio-format",
+            "mp3",
+            "-o",
+            output,
             url
         ];
 
-        const ytDlp = process.platform === "win32"
+    const ytDlp = spawn(
+        ytDlpCommand,
+        args
+    );
 
-            ? spawn(
-                path.join(__dirname, "bin", "yt-dlp.exe"),
-                args
-            )
+    ytDlp.stderr.on("data", data => {
 
-            : spawn(
-                "python3",
-                ["-m", "yt_dlp", ...args]
-            );
+        console.log(data.toString());
 
-        res.setHeader("Content-Type", "audio/mpeg");
+    });
 
-        ytDlp.stdout.pipe(res);
+    ytDlp.on("close", code => {
 
-        ytDlp.stderr.on("data", data => {
+        if (code !== 0) {
 
-            console.log("yt-dlp:", data.toString());
+            return res.status(500)
+                .send("Erro yt-dlp");
 
-        });
-
-        ytDlp.on("close", code => {
-
-            console.log("yt-dlp fechou:", code);
-
-        });
-
-    } catch (err) {
-
-        console.log(err);
-
-        res.status(500).send("Erro stream");
-
-    }
-
-});
-
-/*
-========================================
-DOWNLOAD
-========================================
-*/
-
-app.get("/api/download", async (req, res) => {
-
-    try {
-
-        const url = req.query.url;
-
-        if (!url) {
-            return res.status(400).send("URL inválida");
         }
 
-        const argsInfo = [
-            "--print",
-            "%(uploader)s - %(title)s",
-            url
-        ];
+        if (!fs.existsSync(output)) {
 
-        const getTitulo = process.platform === "win32"
+            return res.status(500)
+                .send("Arquivo não criado");
 
-            ? spawn(
-                path.join(__dirname, "bin", "yt-dlp.exe"),
-                argsInfo
-            )
+        }
 
-            : spawn(
-                "python3",
-                ["-m", "yt_dlp", ...argsInfo]
-            );
+        res.setHeader(
+            "Content-Type",
+            "audio/mpeg"
+        );
 
-        let musicaNome = "";
+        const stream = fs.createReadStream(output);
 
-        getTitulo.stdout.on("data", data => {
+        stream.pipe(res);
 
-            musicaNome += data.toString();
+        stream.on("close", () => {
+
+            fs.unlink(output, () => {});
 
         });
 
-        getTitulo.on("close", () => {
+    });
 
-            musicaNome = musicaNome
-                .trim()
-                .replace(/[\\/:*?"<>|]/g, "")
-                .replace(/[^\w\s.-]/gi, "")
-                .substring(0, 100);
+} catch (err) {
 
-            if (!musicaNome) {
+    console.log(err);
 
-                musicaNome = "FlevesMusic";
+    res.status(500).send("Erro stream");
 
-            }
-
-            res.setHeader(
-                "Content-Disposition",
-                `attachment; filename="${musicaNome}.mp3"`
-            );
-
-            res.setHeader(
-                "Content-Type",
-                "audio/mpeg"
-            );
-
-            const argsDownload = [
-                "--no-playlist",
-                "-f",
-                "bestaudio",
-                "--extract-audio",
-                "--audio-format",
-                "mp3",
-                "-o",
-                "-",
-                url
-            ];
-
-            const ytDlp = process.platform === "win32"
-
-                ? spawn(
-                    path.join(__dirname, "bin", "yt-dlp.exe"),
-                    argsDownload
-                )
-
-                : spawn(
-                    "python3",
-                    ["-m", "yt_dlp", ...argsDownload]
-                );
-
-            ytDlp.stdout.pipe(res);
-
-            ytDlp.stderr.on("data", data => {
-
-                console.log("yt-dlp erro:", data.toString());
-
-            });
-
-        });
-
-    } catch (err) {
-
-        console.log(err);
-
-        res.status(500).send("Erro download");
-
-    }
+}
 
 });
 
-/*
-========================================
-SERVER
-========================================
-*/
+// DOWNLOAD
+app.get("/api/download", async (req, res) => {
+
+try {
+
+    const url = req.query.url;
+
+    if (!url) {
+
+        return res.status(400).send("URL inválida");
+
+    }
+
+    const output = path.join(
+        TEMP_DIR,
+        "%(uploader)s - %(title)s.%(ext)s"
+    );
+
+    const args = isWindows
+
+        ? [
+            "--no-playlist",
+            "-x",
+            "--audio-format",
+            "mp3",
+            "-o",
+            output,
+            url
+        ]
+
+        : [
+            "-m",
+            "yt_dlp",
+            "--no-playlist",
+            "-x",
+            "--audio-format",
+            "mp3",
+            "-o",
+            output,
+            url
+        ];
+
+    const ytDlp = spawn(
+        ytDlpCommand,
+        args
+    );
+
+    ytDlp.stderr.on("data", data => {
+
+        console.log(data.toString());
+
+    });
+
+    ytDlp.on("close", code => {
+
+        if (code !== 0) {
+
+            return res.status(500)
+                .send("Erro yt-dlp");
+
+        }
+
+        const files = fs.readdirSync(TEMP_DIR)
+            .filter(f => f.endsWith(".mp3"));
+
+        if (!files.length) {
+
+            return res.status(500)
+                .send("MP3 não encontrado");
+
+        }
+
+        const latest = files
+            .map(f => ({
+
+                file: f,
+                time: fs.statSync(
+                    path.join(TEMP_DIR, f)
+                ).mtime.getTime()
+
+            }))
+            .sort((a, b) => b.time - a.time)[0];
+
+        const filePath = path.join(
+            TEMP_DIR,
+            latest.file
+        );
+
+        res.download(
+            filePath,
+            latest.file,
+            () => {
+
+                fs.unlink(filePath, () => {});
+
+            }
+        );
+
+    });
+
+} catch (err) {
+
+    console.log(err);
+
+    res.status(500).send("Erro download");
+
+}
+
+});
 
 app.listen(PORT, () => {
 
-    console.log(`🚀 Fleves Music: http://localhost:${PORT}`);
+console.log(
+    `🚀 Fleves Music: http://localhost:${PORT}`
+);
 
 });
