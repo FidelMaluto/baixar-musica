@@ -18,38 +18,45 @@
 
 <body>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div>
-            <div class="logo">
-                <div class="logo-icon">🎵</div>
+    <header class="topbar" id="topbar">
+        <button id="menuToggle" class="menu-toggle">
+            ☰
+        </button>
 
-                <div>
-                    <h2>Fleves</h2>
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div>
+                <div class="logo">
+                    <div class="logo-icon">🎵</div>
 
-                    <p>Music Streaming</p>
+                    <div>
+                        <h2>Fleves</h2>
+
+                        <p>Music Streaming</p>
+                    </div>
                 </div>
+
+                <nav>
+                    <button class="nav-btn active">
+                        🏠 <span>Início</span>
+                    </button>
+
+                    <button id="trendingBtn" class="nav-btn">
+                        🔥 <span>Trending</span>
+                    </button>
+
+                    <button id="favoritosBtn" class="nav-btn">
+                        ❤️ <span>Favoritos</span>
+                    </button>
+                </nav>
             </div>
 
-            <nav>
-                <button class="nav-btn active">
-                    🏠 <span>Início</span>
-                </button>
+            <div class="sidebar-footer">
+                <p>© 2026 Fleves Music</p>
+            </div>
+        </aside>
 
-                <button id="trendingBtn" class="nav-btn">
-                    🔥 <span>Trending</span>
-                </button>
-
-                <button id="favoritosBtn" class="nav-btn">
-                    ❤️ <span>Favoritos</span>
-                </button>
-            </nav>
-        </div>
-
-        <div class="sidebar-footer">
-            <p>© 2026 Fleves Music</p>
-        </div>
-    </aside>
+    </header>
 
     <!-- MAIN -->
     <main class="main-content">
@@ -78,7 +85,7 @@
     </main>
 
     <!-- PLAYER -->
-    <footer class="player">
+    <footer class="player" class="player" id="player">
         <div class="player-left">
             <div class="music-disc"></div>
 
@@ -94,6 +101,53 @@
 
     </footer>
 
+    <script>
+        const menuToggle = document.getElementById("menuToggle");
+        const sidebar = document.getElementById("sidebar");
+
+        menuToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("active");
+        });
+
+        document.addEventListener("click", (e) => {
+
+            if (
+                !sidebar.contains(e.target) &&
+                !menuToggle.contains(e.target)
+            ) {
+                sidebar.classList.remove("active");
+            }
+
+        });
+
+        const topbar = document.getElementById("topbar");
+        const player = document.getElementById("player");
+
+        let lastScroll = 0;
+
+        window.addEventListener("scroll", () => {
+
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > lastScroll && currentScroll > 100) {
+
+                // DESCENDO
+                topbar.classList.add("hide");
+                player.classList.add("hide");
+
+            } else {
+
+                // SUBINDO
+                topbar.classList.remove("hide");
+                player.classList.remove("hide");
+
+            }
+
+            lastScroll = currentScroll;
+
+        });
+        
+    </script>
 </body>
 
 </html>

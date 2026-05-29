@@ -339,6 +339,74 @@ nav {
     border-radius: 20px;
 }
 
+/* HAMBURGUER */
+
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 2000;
+
+    width: 50px;
+    height: 50px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: #22c55e;
+    color: white;
+
+    font-size: 24px;
+    cursor: pointer;
+
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .25);
+}
+
+/* ANIMAÇÕES */
+
+.topbar,
+.player {
+    transition: transform .4s ease;
+}
+
+.topbar.hide {
+    transform: translateY(-150%);
+}
+
+.player.hide {
+    transform: translateY(200%);
+}
+
+/* MOBILE */
+
+@media (max-width:900px) {
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -300px;
+        top: 0;
+        width: 260px;
+        height: 100vh;
+
+        transition: .4s ease;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding-top: 80px;
+    }
+
+}
+
 /* =========================
    RESPONSIVIDADE AVANÇADA
 ========================= */
@@ -575,4 +643,13 @@ nav {
     .nav-btn {
         font-size: 13px;
     }
+}
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 500;
+    background: rgba(7, 17, 31, .8);
+    backdrop-filter: blur(15px);
+    padding: 15px 0;
 }
