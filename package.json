@@ -1,6 +1,9 @@
 {
   "name": "baixar-musica",
-  "start": "node server.js",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "compression": "^1.8.1",
     "cors": "^2.8.6",
