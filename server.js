@@ -182,7 +182,10 @@ app.get("/api/stream", async (req, res) => {
 // DOWNLOAD
 app.get("/api/download", async (req, res) => {
     try {
-        const url = req.query.url; if (!url) { return res.status(400).send("URL inválida"); } const ytDlpPath = process.platform === "win32" ? path.join(__dirname, "bin", "yt-dlp.exe") : "yt-dlp"; const ffmpegPath = process.platform === "win32" ? path.join(__dirname, "bin", "ffmpeg.exe") : "ffmpeg"; const tempName = `music_${Date.now()}.mp3`; const tempPath = path.join(os.tmpdir(), tempName);
+        const url = req.query.url; if (!url) { return res.status(400).send("URL inválida"); }
+        const ytDlpPath = process.platform === "win32" ? path.join(__dirname, "bin", "yt-dlp.exe") : "yt-dlp";
+        const ffmpegPath = process.platform === "win32" ? path.join(__dirname, "bin", "ffmpeg.exe") : "ffmpeg";
+        const tempName = `music_${Date.now()}.mp3`; const tempPath = path.join(os.tmpdir(), tempName);
         // BAIXAR PRIMEIRO 
         const ytDlp = spawn(ytDlpPath, ["-x", "--audio-format", "mp3", "--ffmpeg-location", ffmpegPath, "-o", tempPath, url]);
         ytDlp.stderr.on("data", data => {
