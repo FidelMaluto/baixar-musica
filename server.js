@@ -181,112 +181,28 @@ app.get("/api/stream", async (req, res) => {
 
 // DOWNLOAD
 app.get("/api/download", async (req, res) => {
-
     try {
-
-        const url = req.query.url;
-
-        if (!url) {
-
-            return res.status(400).send("URL inválida");
-
-        }
-
-        const output = path.join(
-            TEMP_DIR,
-            "%(uploader)s - %(title)s.%(ext)s"
-        );
-
-        const args = isWindows
-
-            ? [
-                "--no-playlist",
-                "-x",
-                "--audio-format",
-                "mp3",
-                "-o",
-                output,
-                url
-            ]
-
-            : [
-                "-m",
-                "yt_dlp",
-                "--no-playlist",
-                "-x",
-                "--audio-format",
-                "mp3",
-                "-o",
-                output,
-                url
-            ];
-
-        const ytDlp = spawn(
-            ytDlpCommand,
-            args
-        );
-
+        const url = req.query.url; if (!url) { return res.status(400).send("URL inválida"); } const ytDlpPath = process.platform === "win32" ? path.join(__dirname, "bin", "yt-dlp.exe") : "yt-dlp"; const ffmpegPath = process.platform === "win32" ? path.join(__dirname, "bin", "ffmpeg.exe") : "ffmpeg"; const tempName = `music_${Date.now()}.mp3`; const tempPath = path.join(os.tmpdir(), tempName);
+        // BAIXAR PRIMEIRO 
+        const ytDlp = spawn(ytDlpPath, ["-x", "--audio-format", "mp3", "--ffmpeg-location", ffmpegPath, "-o", tempPath, url]);
         ytDlp.stderr.on("data", data => {
-
-            console.log(data.toString());
+            console.log("yt-dlp:", data.toString());
 
         });
-
         ytDlp.on("close", code => {
-
             if (code !== 0) {
-
-                return res.status(500)
-                    .send("Erro yt-dlp");
-
-            }
-
-            const files = fs.readdirSync(TEMP_DIR)
-                .filter(f => f.endsWith(".mp3"));
-
-            if (!files.length) {
-
-                return res.status(500)
-                    .send("MP3 não encontrado");
-
-            }
-
-            const latest = files
-                .map(f => ({
-
-                    file: f,
-                    time: fs.statSync(
-                        path.join(TEMP_DIR, f)
-                    ).mtime.getTime()
-
-                }))
-                .sort((a, b) => b.time - a.time)[0];
-
-            const filePath = path.join(
-                TEMP_DIR,
-                latest.file
-            );
-
-            res.download(
-                filePath,
-                latest.file,
-                () => {
-
-                    fs.unlink(filePath, () => { });
-
-                }
-            );
-
+                return res.status(500).send("Erro yt-dlp");
+            } // ENVIAR ARQUIVO 
+            res.download(tempPath, "Fleves_Music.mp3", err => {
+                // APAGAR TEMP 
+                fs.unlink(tempPath, () => { });
+                if (err) { console.log(err); }
+            });
         });
-
     } catch (err) {
-
         console.log(err);
-
         res.status(500).send("Erro download");
-
     }
-
 });
 
 app.listen(PORT, () => {
