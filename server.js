@@ -165,10 +165,6 @@ app.get("/api/stream", async (req, res) => {
             console.log("ERRO yt-dlp:", err);
         });
 
-        ffmpeg.on("error", err => {
-            console.log("ERRO ffmpeg:", err);
-        });
-
     } catch (err) {
 
         console.log(err);
@@ -213,6 +209,22 @@ app.get("/debug", (req, res) => {
         platform: process.platform,
         path: process.env.PATH
     });
+});
+
+const { exec } = require("child_process");
+
+app.get("/debug-yt", (req, res) => {
+
+    exec("which yt-dlp", (err, stdout, stderr) => {
+
+        res.json({
+            error: err?.message,
+            stdout,
+            stderr
+        });
+
+    });
+
 });
 
 app.listen(PORT, () => {
