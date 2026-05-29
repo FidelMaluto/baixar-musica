@@ -339,32 +339,91 @@ nav {
     border-radius: 20px;
 }
 
-/* RESPONSIVO */
-@media(max-width:900px) {
+/* =========================
+   RESPONSIVIDADE AVANÇADA
+========================= */
+
+/* Tablets */
+@media (max-width: 1024px) {
+
+    .main-content {
+        padding: 20px;
+        margin-left: 220px;
+    }
+
+    .sidebar {
+        width: 220px;
+    }
+
+    .player {
+        left: 240px;
+        right: 15px;
+    }
+
+    .player audio {
+        width: 250px;
+    }
+
+    .songs-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+/* Tablets pequenos */
+@media (max-width: 900px) {
+
     body {
         flex-direction: column;
     }
 
     .sidebar {
+        position: relative;
         width: 100%;
         height: auto;
-        position: relative;
+        padding: 15px;
+    }
+
+    .logo {
+        margin-bottom: 20px;
     }
 
     nav {
+        flex-wrap: wrap;
         flex-direction: row;
-        margin-top: 20px;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .nav-btn {
+        width: auto;
+        min-width: 140px;
     }
 
     .main-content {
         margin-left: 0;
+        width: 100%;
+        padding: 20px;
+        padding-bottom: 220px;
+    }
+
+    .topbar h1 {
+        font-size: 28px;
     }
 
     .player {
         left: 10px;
         right: 10px;
+        bottom: 10px;
         flex-direction: column;
         gap: 15px;
+        align-items: center;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .player-left {
+        flex-direction: column;
+        text-align: center;
     }
 
     .player audio {
@@ -372,9 +431,16 @@ nav {
     }
 }
 
-@media(max-width:600px) {
+/* Smartphones */
+@media (max-width: 768px) {
+
     .songs-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+    }
+
+    .song img {
+        height: 200px;
     }
 
     .search-box {
@@ -382,14 +448,131 @@ nav {
     }
 
     .search-box button {
-        padding: 15px;
+        width: 100%;
+        height: 55px;
     }
 
-    .nav-btn span {
-        display: inline;
+    .section-title {
+        font-size: 24px;
+    }
+}
+
+/* Smartphones pequenos */
+@media (max-width: 480px) {
+
+    .sidebar {
+        padding: 12px;
+    }
+
+    .logo {
+        gap: 10px;
+    }
+
+    .logo-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
+    }
+
+    .logo h2 {
+        font-size: 20px;
+    }
+
+    .logo p {
+        font-size: 11px;
+    }
+
+    .nav-btn {
+        min-width: 100%;
+        justify-content: center;
+        padding: 14px;
+        font-size: 14px;
+    }
+
+    .main-content {
+        padding: 15px;
+        padding-bottom: 240px;
     }
 
     .topbar h1 {
-        font-size: 26px;
+        font-size: 22px;
+    }
+
+    .topbar p {
+        font-size: 14px;
+    }
+
+    .search-box input {
+        padding: 15px;
+        font-size: 14px;
+    }
+
+    .section-title {
+        font-size: 22px;
+    }
+
+    .songs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .song {
+        border-radius: 18px;
+    }
+
+    .song img {
+        height: 220px;
+    }
+
+    .song-content h3 {
+        font-size: 15px;
+    }
+
+    .actions {
+        gap: 10px;
+    }
+
+    .play-btn,
+    .favorite-btn,
+    .download-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
+    }
+
+    .music-disc {
+        width: 50px;
+        height: 50px;
+    }
+
+    .music-info h3 {
+        font-size: 14px;
+    }
+
+    .music-info p {
+        font-size: 12px;
+    }
+
+    .player {
+        border-radius: 18px;
+    }
+}
+
+/* Telas muito pequenas */
+@media (max-width: 320px) {
+
+    .topbar h1 {
+        font-size: 18px;
+    }
+
+    .logo h2 {
+        font-size: 18px;
+    }
+
+    .song img {
+        height: 180px;
+    }
+
+    .nav-btn {
+        font-size: 13px;
     }
 }
