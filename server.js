@@ -208,6 +208,13 @@ app.get("/api/download", async (req, res) => {
     }
 });
 
+app.get("/debug", (req, res) => {
+    res.json({
+        platform: process.platform,
+        path: process.env.PATH
+    });
+});
+
 app.listen(PORT, () => {
 
     console.log(
