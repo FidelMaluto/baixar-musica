@@ -10,20 +10,9 @@ const { spawn } = require("child_process");
 const app = express();
 
 app.use(cors());
-
 app.use(express.static("public"));
 
 const PORT = process.env.PORT || 3000;
-
-const TEMP_DIR = path.join(os.tmpdir(), "fleves_music");
-
-if (!fs.existsSync(TEMP_DIR)) {
-
-    fs.mkdirSync(TEMP_DIR, {
-        recursive: true
-    });
-
-}
 
 const isWindows = process.platform === "win32";
 
@@ -77,160 +66,131 @@ app.get("/api/search", async (req, res) => {
 
 // STREAM
 app.get("/api/stream", async (req, res) => {
+    try {
+        const url = req.query.url;
 
+        if (!url) {
+            return res.status(400).send("URL inválida");
+        }
+
+        const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
+        const ffmpegPath = path.join(__dirname, "bin", "ffmpeg.exe");
+
+        res.setHeader("Content-Type", "audio/mpeg");
+
+        const ytDlp = spawn(ytDlpPath, [
+            "--no-playlist",
+            "-f",
+            "bestaudio",
+            "-o",
+            "-",
+            url
+        ]);
+
+        const ffmpeg = spawn(ffmpegPath, [
+            "-i",
+            "pipe:0",
+            "-f",
+            "mp3",
+            "-ab",
+            "192k",
+            "pipe:1"
+        ]);
+
+        ytDlp.stdout.pipe(ffmpeg.stdin);
+        ffmpeg.stdout.pipe(res);
+
+        ytDlp.stderr.on("data", data => {
+            console.log("yt-dlp:", data.toString());
+        });
+
+        ffmpeg.stderr.on("data", data => {
+            console.log("ffmpeg:", data.toString());
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Erro stream");
+    }
+});
+
+// DOWNLOAD
+app.get("/api/download", async (req, res) => {
     try {
 
         const url = req.query.url;
 
         if (!url) {
-
             return res.status(400).send("URL inválida");
-
         }
 
-        const output = path.join(
-            TEMP_DIR,
-            `stream-${Date.now()}.mp3`
+        const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
+
+        const getTitulo = spawn(
+            ytDlpPath,
+            ["--print", "%(uploader)s - %(title)s", url]
         );
 
-        const args = isWindows
+        let musicaNome = "";
 
-            ? [
-                "--no-playlist",
-                "-x",
-                "--audio-format",
-                "mp3",
-                "-o",
-                output,
-                url
-            ]
-
-            : [
-                "-m",
-                "yt_dlp",
-                "--no-playlist",
-                "-x",
-                "--audio-format",
-                "mp3",
-                "-o",
-                output,
-                url
-            ];
-
-        const ytDlp = spawn(
-            ytDlpCommand,
-            args
-        );
-
-        ytDlp.stderr.on("data", data => {
-
-            console.log(data.toString());
-
+        getTitulo.stdout.on("data", data => {
+            musicaNome += data.toString();
         });
 
-        ytDlp.on("close", code => {
+        getTitulo.on("close", () => {
 
-            if (code !== 0) {
+            musicaNome = musicaNome
+                .trim()
+                .replace(/[\\/:*?"<>|]/g, "")
+                .replace(/[^\w\s.-]/gi, "")
+                .substring(0, 120);
 
-                return res.status(500)
-                    .send("Erro yt-dlp");
-
+            if (!musicaNome) {
+                musicaNome = "Fleves_Music";
             }
 
-            if (!fs.existsSync(output)) {
-
-                return res.status(500)
-                    .send("Arquivo não criado");
-
-            }
+            res.setHeader(
+                "Content-Disposition",
+                `attachment; filename="${musicaNome}.mp3"`
+            );
 
             res.setHeader(
                 "Content-Type",
                 "audio/mpeg"
             );
 
-            const stream = fs.createReadStream(output);
+            const ytDlp = spawn(
+                ytDlpPath,
+                [
+                    "-x",
+                    "--audio-format",
+                    "mp3",
+                    "-o",
+                    "-",
+                    url
+                ]
+            );
 
-            stream.pipe(res);
+            ytDlp.stdout.pipe(res);
 
-            stream.on("close", () => {
-
-                fs.unlink(output, () => { });
-
+            ytDlp.stderr.on("data", data => {
+                console.log(
+                    "yt-dlp erro:",
+                    data.toString()
+                );
             });
 
-        });
-
-        ytDlp.on("error", err => {
-            console.log("ERRO yt-dlp:", err);
         });
 
     } catch (err) {
 
         console.log(err);
 
-        res.status(500).send("Erro stream");
-
-    }
-
-});
-
-// DOWNLOAD
-app.get("/api/download", async (req, res) => {
-    try {
-        const url = req.query.url; if (!url) { return res.status(400).send("URL inválida"); }
-        const ytDlpPath = process.platform === "win32" ? path.join(__dirname, "bin", "yt-dlp.exe") : "yt-dlp";
-        const ffmpegPath = process.platform === "win32" ? path.join(__dirname, "bin", "ffmpeg.exe") : "ffmpeg";
-        const tempName = `music_${Date.now()}.mp3`; const tempPath = path.join(os.tmpdir(), tempName);
-        // BAIXAR PRIMEIRO 
-        const ytDlp = spawn(ytDlpPath, ["-x", "--audio-format", "mp3", "--ffmpeg-location", ffmpegPath, "-o", tempPath, url]);
-        ytDlp.stderr.on("data", data => {
-            console.log("yt-dlp:", data.toString());
-
-        });
-        ytDlp.on("close", code => {
-            if (code !== 0) {
-                return res.status(500).send("Erro yt-dlp");
-            } // ENVIAR ARQUIVO 
-            res.download(tempPath, "Fleves_Music.mp3", err => {
-                // APAGAR TEMP 
-                fs.unlink(tempPath, () => { });
-                if (err) { console.log(err); }
-            });
-        });
-    } catch (err) {
-        console.log(err);
         res.status(500).send("Erro download");
+
     }
-});
-
-app.get("/debug", (req, res) => {
-    res.json({
-        platform: process.platform,
-        path: process.env.PATH
-    });
-});
-
-const { exec } = require("child_process");
-
-app.get("/debug-yt", (req, res) => {
-
-    exec("which yt-dlp", (err, stdout, stderr) => {
-
-        res.json({
-            error: err?.message,
-            stdout,
-            stderr
-        });
-
-    });
-
 });
 
 app.listen(PORT, () => {
-
-    console.log(
-        `🚀 Fleves Music: http://localhost:${PORT}`
-    );
-
+    console.log(`Fleves Music: http://localhost:${PORT}`);
 });
