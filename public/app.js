@@ -40,31 +40,26 @@ function renderResults(list) {
     `;
 
     // PLAY
-card.querySelector(".play-btn").onclick = async () => {
+    card.querySelector(".play-btn").onclick = async () => {
 
-try {
+      try {
 
-    player.pause();
+        player.pause();
 
-    player.src = `/api/stream?url=${encodeURIComponent(song.url)}`;
+        player.src = `/api/stream?url=${encodeURIComponent(song.url)}`;
 
-    player.load();
+        player.load();
 
-    await player.play();
+        await player.play();
 
-    document.getElementById("now-playing").textContent = song.title;
+        document.getElementById("now-playing").textContent = song.title;
+        document.getElementById("artist-playing").textContent = song.author;
 
-    document.getElementById("artist-playing").textContent = song.author;
+      } catch (err) {
+        console.log(err);
+      }
 
-} catch (err) {
-
-    console.log(err);
-
-}
-
-};
-
-
+    };
 
     // FAVORITO
     card.querySelector(".favorite-btn").onclick = () => {
