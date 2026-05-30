@@ -24,36 +24,37 @@
 
     <header class="topbar" id="topbar">
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar" id="sidebar">
-            <div>
-                <div class="logo">
-                    <div class="logo-icon">🎵</div>
-
-                    <div>
-                        <h2>Fleves</h2>
-
-                        <p>Music Streaming</p>
-                    </div>
-                </div>
-
-                <nav>
-                    <button class="nav-btn active">
-                        🏠 <span>Início</span>
-                    </button>
-
-                    <button id="trendingBtn" class="nav-btn">
-                        🔥 <span>Trending</span>
-                    </button>
-
-                    <button id="favoritosBtn" class="nav-btn">
-                        ❤️ <span>Favoritos</span>
-                    </button>
-                </nav>
-            </div>
-        </aside>
-
     </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div>
+            <div class="logo">
+                <div class="logo-icon">🎵</div>
+
+                <div>
+                    <h2>Fleves</h2>
+
+                    <p>Music Streaming</p>
+                </div>
+            </div>
+
+            <nav>
+                <button class="nav-btn active">
+                    🏠 <span>Início</span>
+                </button>
+
+                <button id="trendingBtn" class="nav-btn">
+                    🔥 <span>Trending</span>
+                </button>
+
+                <button id="favoritosBtn" class="nav-btn">
+                    ❤️ <span>Favoritos</span>
+                </button>
+            </nav>
+        </div>
+    </aside>
+
 
     <!-- MAIN -->
     <main class="main-content">
@@ -82,7 +83,7 @@
     </main>
 
     <!-- PLAYER -->
-    <footer class="player" class="player" id="player">
+    <footer class="player" id="player1">
         <div class="player-left">
             <div class="music-disc"></div>
 
@@ -118,7 +119,7 @@
         });
 
         const topbar = document.getElementById("topbar");
-        const player = document.getElementById("player");
+        const player1 = document.getElementById("player1");
 
         let lastScroll = 0;
 
@@ -130,13 +131,13 @@
 
                 // DESCENDO
                 topbar.classList.add("hide");
-                player.classList.add("hide");
+                player1.classList.add("hide");
 
             } else {
 
                 // SUBINDO
                 topbar.classList.remove("hide");
-                player.classList.remove("hide");
+                player1.classList.remove("hide");
 
             }
 
