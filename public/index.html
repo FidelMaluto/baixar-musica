@@ -61,9 +61,7 @@
 
         <!-- TOPBAR -->
         <!-- BOTÃO PESQUISA MOBILE -->
-        <button id="searchToggle" class="search-toggle">
-            🔍
-        </button>
+        <button id="searchToggle" class="search-toggle">🔍</button>
 
         <!-- TOPBAR -->
         <header class="topbar">
@@ -75,14 +73,10 @@
 
             <div id="searchContainer" class="search-container">
 
-                <button id="closeSearch" class="close-search"> ✖ </button>
-
                 <div class="search-box">
                     <input type="text" id="search" placeholder="Pesquisar músicas ou artistas...">
 
-                    <button onclick="searchMusic()">
-                        Buscar
-                    </button>
+                    <button onclick="searchMusic()">Buscar</button>
                 </div>
 
             </div>
@@ -160,24 +154,29 @@
 
         });
 
-        const searchToggle = document.getElementById("searchToggle");
+        const searchToggle =
+            document.getElementById("searchToggle");
 
-        const searchContainer = document.getElementById("searchContainer");
-
-        const closeSearch = document.getElementById("closeSearch");
+        const searchContainer =
+            document.getElementById("searchContainer");
 
         searchToggle.addEventListener("click", () => {
 
-            searchContainer.classList.add("active");
+            searchContainer.classList.toggle("active");
+
+            if (
+                searchContainer.classList.contains("active")
+            ) {
+
+                searchToggle.textContent = "✖";
+
+            } else {
+
+                searchToggle.textContent = "🔍";
+
+            }
 
         });
-
-        closeSearch.addEventListener("click", () => {
-
-            searchContainer.classList.remove("active");
-
-        });
-
     </script>
 </body>
 

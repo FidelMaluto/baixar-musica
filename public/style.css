@@ -392,23 +392,17 @@ nav {
 
 .search-toggle {
     display: none;
-
     position: fixed;
     top: 15px;
     right: 15px;
-
     width: 50px;
     height: 50px;
-
     border: none;
     border-radius: 50%;
-
     background: #22c55e;
     color: white;
-
     font-size: 22px;
     cursor: pointer;
-
     z-index: 3000;
 }
 
@@ -418,25 +412,10 @@ nav {
     transition: .3s ease;
 }
 
-/* BOTÃO FECHAR */
-
-.close-search {
-    display: none;
-
-    width: 45px;
-    height: 45px;
-
-    border: none;
-    border-radius: 50%;
-
-    background: #ef4444;
-    color: white;
-
-    font-size: 18px;
-    cursor: pointer;
-}
-
 /* MOBILE */
+.search-toggle {
+    display: none;
+}
 
 @media (max-width:768px) {
 
@@ -444,50 +423,47 @@ nav {
         display: flex;
         align-items: center;
         justify-content: center;
-    }
 
-    .hero-text {
-        text-align: center;
+        position: fixed;
+        top: 15px;
+        right: 15px;
+
+        width: 50px;
+        height: 50px;
+
+        border: none;
+        border-radius: 50%;
+
+        background: #22c55e;
+        color: white;
+
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 3000;
     }
 
     .search-container {
 
         position: fixed;
-        inset: 0;
-
-        background: rgba(7, 17, 31, .98);
-
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        top: 0;
+        left: 0;
+        right: 0;
 
         padding: 20px;
+        background: #07111f;
+
+        transform: translateY(-120%);
+        transition: .3s ease;
 
         z-index: 2500;
-
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
     }
 
     .search-container.active {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-    }
-
-    .close-search {
-        display: block;
-        align-self: flex-end;
-        margin-bottom: 20px;
+        transform: translateY(0);
     }
 
     .search-box {
         flex-direction: column;
-    }
-
-    .search-box input {
-        width: 100%;
     }
 
     .search-box button {
@@ -500,7 +476,6 @@ nav {
 
 /* Notebook */
 @media (max-width:1200px) {
-
     .songs-grid {
         grid-template-columns:
             repeat(auto-fill, minmax(220px, 1fr));
@@ -514,7 +489,6 @@ nav {
 
 /* Tablet */
 @media (max-width:900px) {
-
     .menu-toggle {
         display: block;
     }
@@ -523,10 +497,8 @@ nav {
         position: fixed;
         left: -280px;
         top: 0;
-
         width: 260px;
         height: 100vh;
-
         transition: .4s ease;
     }
 
