@@ -154,24 +154,19 @@
 
         });
 
-        const searchToggle =
-            document.getElementById("searchToggle");
+        const searchToggle = document.getElementById("searchToggle");
 
-        const searchContainer =
-            document.getElementById("searchContainer");
+        const searchContainer = document.getElementById("searchContainer");
 
         searchToggle.addEventListener("click", () => {
-
             searchContainer.classList.toggle("active");
 
-            if (
-                searchContainer.classList.contains("active")
-            ) {
-
+            if (searchContainer.classList.contains("active")) {
+                searchToggle.style.background = "#ef4444"
                 searchToggle.textContent = "✖";
 
             } else {
-
+                searchToggle.style.background = "linear-gradient(135deg, #22c55e, #15803d)";
                 searchToggle.textContent = "🔍";
 
             }

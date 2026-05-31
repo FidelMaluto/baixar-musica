@@ -412,66 +412,6 @@ nav {
     transition: .3s ease;
 }
 
-/* MOBILE */
-.search-toggle {
-    display: none;
-}
-
-@media (max-width:768px) {
-
-    .search-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        position: fixed;
-        top: 15px;
-        right: 15px;
-
-        width: 50px;
-        height: 50px;
-
-        border: none;
-        border-radius: 50%;
-
-        background: #22c55e;
-        color: white;
-
-        font-size: 24px;
-        cursor: pointer;
-        z-index: 3000;
-    }
-
-    .search-container {
-
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-
-        padding: 20px;
-        background: #07111f;
-
-        transform: translateY(-120%);
-        transition: .3s ease;
-
-        z-index: 2500;
-    }
-
-    .search-container.active {
-        transform: translateY(0);
-    }
-
-    .search-box {
-        flex-direction: column;
-    }
-
-    .search-box button {
-        width: 100%;
-        height: 55px;
-    }
-}
-
 /* RESPONSIVIDADE */
 
 /* Notebook */
@@ -622,4 +562,111 @@ nav {
         height: 180px;
     }
 
+}
+
+.search-toggle {
+    display: none;
+}
+
+@media (max-width:768px) {
+
+    /* BOTÃO 🔍 / ✖ */
+    .search-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        width: 55px;
+        height: 55px;
+        border: none;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #22c55e, #15803d);
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 3000;
+        box-shadow: 0 10px 25px rgba(34, 197, 94, .3);
+        transition: .3s ease;
+    }
+
+    .search-toggle:hover {
+        transform: scale(1.08);
+    }
+
+    /* TÍTULO */
+    .hero-text {
+        text-align: center;
+    }
+
+    /* PAINEL DE PESQUISA */
+    .search-container {
+        position: fixed;
+        inset: 0;
+        background: rgba(7, 17, 31, .96);
+        backdrop-filter: blur(20px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 25px;
+        z-index: 2500;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: scale(.95);
+        transition: opacity .3s ease, transform .3s ease, visibility .3s;
+    }
+
+    .search-container.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: scale(1);
+    }
+
+    /* FORMULÁRIO */
+    .search-box {
+        width: 100%;
+        max-width: 500px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* INPUT */
+    .search-box input {
+        width: 100%;
+        padding: 18px;
+        border: none;
+        border-radius: 18px;
+        background: #111827;
+        color: white;
+        font-size: 16px;
+        outline: none;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, .2);
+        transition: .3s ease;
+    }
+
+    .search-box input:focus {
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, .2);
+    }
+
+    /* BOTÃO BUSCAR */
+    .search-box button {
+        width: 100%;
+        height: 58px;
+        border: none;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #22c55e, #15803d);
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .3s ease;
+    }
+
+    .search-box button:hover {
+        transform: translateY(-2px);
+    }
 }
