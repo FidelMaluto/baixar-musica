@@ -2,16 +2,46 @@ const results = document.getElementById("results");
 const player = document.getElementById("player");
 
 async function searchMusic() {
-  const q = document.getElementById("search").value;
+
+  const q = document.getElementById("search").value.trim();
 
   if (!q) return;
 
   results.innerHTML = "<h2>Pesquisando...</h2>";
 
-  const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
-  const data = await res.json();
+  try {
 
-  renderResults(data);
+    const res = await fetch(
+      `/api/search?q=${encodeURIComponent(q)}`
+    );
+
+    const data = await res.json();
+
+    if (!data || data.length === 0) {
+
+      results.innerHTML = `
+        <div class="empty-state">
+          <h2>😕 Nenhuma música encontrada</h2>
+          <p>Tente pesquisar outro artista ou título.</p>
+        </div>
+      `;
+
+      return;
+    }
+
+    renderResults(data);
+
+  } catch (err) {
+
+    console.error(err);
+
+    results.innerHTML = `
+      <div class="empty-state">
+        <h2>⚠️ Erro na pesquisa</h2>
+        <p>Não foi possível pesquisar músicas.</p>
+      </div>
+    `;
+  }
 }
 
 function renderResults(list) {
