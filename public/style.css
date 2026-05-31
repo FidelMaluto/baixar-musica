@@ -388,9 +388,115 @@ nav {
     padding: 15px 0;
 }
 
-/* =========================
-   RESPONSIVIDADE
-========================= */
+/* BOTÃO PESQUISA */
+
+.search-toggle {
+    display: none;
+
+    position: fixed;
+    top: 15px;
+    right: 15px;
+
+    width: 50px;
+    height: 50px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #22c55e;
+    color: white;
+
+    font-size: 22px;
+    cursor: pointer;
+
+    z-index: 3000;
+}
+
+/* CONTAINER PESQUISA */
+
+.search-container {
+    transition: .3s ease;
+}
+
+/* BOTÃO FECHAR */
+
+.close-search {
+    display: none;
+
+    width: 45px;
+    height: 45px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #ef4444;
+    color: white;
+
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* MOBILE */
+
+@media (max-width:768px) {
+
+    .search-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero-text {
+        text-align: center;
+    }
+
+    .search-container {
+
+        position: fixed;
+        inset: 0;
+
+        background: rgba(7, 17, 31, .98);
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        padding: 20px;
+
+        z-index: 2500;
+
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    .search-container.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    .close-search {
+        display: block;
+        align-self: flex-end;
+        margin-bottom: 20px;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .search-box input {
+        width: 100%;
+    }
+
+    .search-box button {
+        width: 100%;
+        height: 55px;
+    }
+}
+
+/* RESPONSIVIDADE */
 
 /* Notebook */
 @media (max-width:1200px) {

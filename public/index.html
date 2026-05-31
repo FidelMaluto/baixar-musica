@@ -60,18 +60,33 @@
     <main class="main-content">
 
         <!-- TOPBAR -->
-        <header class="topbar">
-            <div>
-                <h1>Descubra novas músicas 🎧</h1>
+        <!-- BOTÃO PESQUISA MOBILE -->
+        <button id="searchToggle" class="search-toggle">
+            🔍
+        </button>
 
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <div class="hero-text">
+                <h1>Descubra novas músicas 🎧</h1>
                 <p>Streaming e downloads ilimitados</p>
             </div>
 
-            <div class="search-box">
-                <input type="text" id="search" placeholder="Pesquisar músicas ou artistas...">
+            <div id="searchContainer" class="search-container">
 
-                <button onclick="searchMusic()">Buscar</button>
+                <button id="closeSearch" class="close-search"> ✖ </button>
+
+                <div class="search-box">
+                    <input type="text" id="search" placeholder="Pesquisar músicas ou artistas...">
+
+                    <button onclick="searchMusic()">
+                        Buscar
+                    </button>
+                </div>
+
             </div>
+
         </header>
 
         <!-- RESULTADOS -->
@@ -142,6 +157,24 @@
             }
 
             lastScroll = currentScroll;
+
+        });
+
+        const searchToggle = document.getElementById("searchToggle");
+
+        const searchContainer = document.getElementById("searchContainer");
+
+        const closeSearch = document.getElementById("closeSearch");
+
+        searchToggle.addEventListener("click", () => {
+
+            searchContainer.classList.add("active");
+
+        });
+
+        closeSearch.addEventListener("click", () => {
+
+            searchContainer.classList.remove("active");
 
         });
 
