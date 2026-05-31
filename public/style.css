@@ -412,6 +412,20 @@ nav {
     transition: .3s ease;
 }
 
+/* Erros na tela */
+.empty-state {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty-state h2 {
+    font-size: 22px;
+}
+.empty-state p {
+    font-size: 18px;
+}
+
 /* RESPONSIVIDADE */
 
 /* Notebook */

@@ -21,7 +21,7 @@ async function searchMusic() {
 
       results.innerHTML = `
         <div class="empty-state">
-          <h2>😕 Nenhuma música encontrada</h2>
+          <h2>😕 Nenhuma música encontrada</h2> <br>
           <p>Tente pesquisar outro artista ou título.</p>
         </div>
       `;
@@ -37,7 +37,7 @@ async function searchMusic() {
 
     results.innerHTML = `
       <div class="empty-state">
-        <h2>⚠️ Erro na pesquisa</h2>
+        <h2>⚠️ Erro na pesquisa</h2> <br>
         <p>Não foi possível pesquisar músicas.</p>
       </div>
     `;
