@@ -347,19 +347,14 @@ nav {
     top: 15px;
     left: 15px;
     z-index: 2000;
-
     width: 50px;
     height: 50px;
-
     border: none;
     border-radius: 12px;
-
     background: #22c55e;
     color: white;
-
     font-size: 24px;
     cursor: pointer;
-
     box-shadow: 0 10px 20px rgba(0, 0, 0, .25);
 }
 
@@ -378,18 +373,17 @@ nav {
     transform: translateY(200%);
 }
 
-
 .topbar {
     position: sticky;
     top: 0;
     z-index: 500;
     background: rgba(7, 17, 31, .8);
     backdrop-filter: blur(15px);
-    padding: 15px 0;
+    padding: 15px;
+    border-radius: 8px;
 }
 
 /* BOTÃO PESQUISA */
-
 .search-toggle {
     display: none;
     position: fixed;
@@ -422,6 +416,7 @@ nav {
 .empty-state h2 {
     font-size: 22px;
 }
+
 .empty-state p {
     font-size: 18px;
 }
@@ -621,7 +616,8 @@ nav {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 25px;
+        /* padding: 50px; */
+        border-radius: 8px;
         z-index: 2500;
         opacity: 0;
         visibility: hidden;
@@ -635,6 +631,7 @@ nav {
         visibility: visible;
         pointer-events: auto;
         transform: scale(1);
+        padding: 25px;
     }
 
     /* FORMULÁRIO */
