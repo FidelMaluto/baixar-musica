@@ -12,7 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.static("public"));
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3100;
 
 const isWindows = process.platform === "win32";
 
@@ -111,6 +111,7 @@ app.get("/api/download", async (req, res) => {
 
         getTitulo.on("close", () => {
 
+            // Validando caracteres especiais
             musicaNome = musicaNome
                 .trim()
                 .replace(/[\\/:*?"<>|]/g, "")
