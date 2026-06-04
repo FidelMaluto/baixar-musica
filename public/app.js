@@ -61,8 +61,8 @@ function renderResults(list) {
             <small>${song.duration}</small>
 
             <div class="actions">
-                <button class="play-btn"> ▶</button>
-                <button class="favorite-btn">❤️</button>
+                <button class="play-btn"> ▶ </button>
+                <button class="favorite-btn"> ❤️ </button>
 
                 <a class="download-btn" href="/api/download?url=${encodeURIComponent(song.url)}"> ⬇ </a>
             </div>
@@ -71,9 +71,7 @@ function renderResults(list) {
 
     // PLAY
     card.querySelector(".play-btn").onclick = async () => {
-
       try {
-
         player.pause();
 
         player.src = `/api/stream?url=${encodeURIComponent(song.url)}`;
@@ -133,12 +131,13 @@ async function loadTrending() {
     "Força Suprema",
     "C4 Pedro",
     "Chelsea Dinorath",
-    "Maria Benguela",
-    "Rema",
+    "DJ-AKM",
+    "POP SMOKE",
     "Calema",
     "Michael Jackson"
   ];
 
+  // Buscando simulação de tendências
   const random = trends[Math.floor(Math.random() * trends.length)];
   const res = await fetch(`/api/search?q=${encodeURIComponent(random)}`);
   const data = await res.json();
@@ -146,6 +145,6 @@ async function loadTrending() {
   renderResults(data);
 }
 
-// BOTÕES
+// BOTÕES para apresentar as tendências e as favoritas
 document.getElementById("favoritosBtn").onclick = loadFavorites;
 document.getElementById("trendingBtn").onclick = loadTrending;
