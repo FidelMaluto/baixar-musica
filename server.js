@@ -18,9 +18,7 @@ const isWindows = process.platform === "win32";
 
 const ytDlpCommand = isWindows
 
-    ? path.join(__dirname, "bin", "yt-dlp.exe")
-
-    : "python3";
+    ? path.join(__dirname, "bin", "yt-dlp.exe") : "python3";
 
 // PESQUISA
 app.get("/api/search", async (req, res) => {
@@ -100,17 +98,16 @@ app.get("/api/download", async (req, res) => {
         }
 
         const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
-
+        // Pegando os títulos das músicas
         const getTitulo = spawn(ytDlpPath, ["--print", "%(uploader)s - %(title)s", url]);
 
         let musicaNome = "";
-
+        // Junção
         getTitulo.stdout.on("data", data => {
             musicaNome += data.toString();
         });
 
         getTitulo.on("close", () => {
-
             // Validando caracteres especiais
             musicaNome = musicaNome
                 .trim()
@@ -123,7 +120,6 @@ app.get("/api/download", async (req, res) => {
             }
 
             res.setHeader("Content-Disposition", `attachment; filename="${musicaNome}.mp3"`);
-
             res.setHeader("Content-Type", "audio/mpeg");
 
             const ytDlp = spawn(ytDlpPath, ["-x", "--audio-format", "mp3", "-o", "-", url]);

@@ -4,13 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Fleves Music</title>
 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="app.js" defer></script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 </head>
 
@@ -50,8 +48,6 @@
 
     <!-- MAIN -->
     <main class="main-content">
-
-        <!-- TOPBAR -->
         <!-- BOTÃO PESQUISA MOBILE -->
         <button id="searchToggle" class="search-toggle">🔍</button>
 
@@ -90,7 +86,6 @@
                 <h3 id="now-playing"> Nenhuma música</h3>
 
                 <p id="artist-playing">Escolha uma música</p>
-
             </div>
         </div>
 
@@ -122,18 +117,16 @@
 
         let lastScroll = 0;
 
+        // Lógica do scroll, parecido com de algumas redes sócias...
         window.addEventListener("scroll", () => {
-
             const currentScroll = window.pageYOffset;
 
             if (currentScroll > lastScroll && currentScroll > 100) {
-
                 // DESCENDO
                 topbar.classList.add("hide");
                 player1.classList.add("hide");
 
             } else {
-
                 // SUBINDO
                 topbar.classList.remove("hide");
                 player1.classList.remove("hide");

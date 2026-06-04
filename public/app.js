@@ -2,7 +2,6 @@ const results = document.getElementById("results");
 const player = document.getElementById("player");
 
 async function searchMusic() {
-
   const q = document.getElementById("search").value.trim();
 
   if (!q) return;
@@ -10,7 +9,6 @@ async function searchMusic() {
   results.innerHTML = "<h2>Pesquisando...</h2>";
 
   try {
-
     const res = await fetch(
       `/api/search?q=${encodeURIComponent(q)}`
     );
@@ -18,7 +16,6 @@ async function searchMusic() {
     const data = await res.json();
 
     if (!data || data.length === 0) {
-
       results.innerHTML = `
         <div class="empty-state">
           <h2>😕 Nenhuma música encontrada</h2> <br>
@@ -32,7 +29,6 @@ async function searchMusic() {
     renderResults(data);
 
   } catch (err) {
-
     console.error(err);
 
     results.innerHTML = `
