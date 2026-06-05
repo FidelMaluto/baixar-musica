@@ -14,12 +14,6 @@ app.use(express.static("public"));
 
 const PORT = process.env.PORT || 3100;
 
-const isWindows = process.platform === "win32";
-
-const ytDlpCommand = isWindows
-
-    ? path.join(__dirname, "bin", "yt-dlp.exe") : "python3";
-
 // PESQUISA
 app.get("/api/search", async (req, res) => {
     try {

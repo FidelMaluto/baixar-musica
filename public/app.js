@@ -144,16 +144,10 @@ async function loadTrending() {
 // Mantendo os dados da última pesquisa na página inicial
 lastSearchResults = data;
 
-localStorage.setItem(
-  "lastSearchResults",
-  JSON.stringify(data)
-);
+localStorage.setItem("lastSearchResults", JSON.stringify(data));
 
 // Ao abrir o site
-const savedResults =
-  JSON.parse(
-    localStorage.getItem("lastSearchResults")
-  ) || [];
+const savedResults = JSON.parse(localStorage.getItem("lastSearchResults")) || [];
 
 lastSearchResults = savedResults;
 
