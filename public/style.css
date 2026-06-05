@@ -340,7 +340,6 @@ nav {
 }
 
 /* HAMBURGUER */
-
 .menu-toggle {
     display: none;
     position: fixed;
@@ -359,7 +358,6 @@ nav {
 }
 
 /* ANIMAÇÕES */
-
 .topbar,
 .player {
     transition: transform .4s ease;
@@ -401,7 +399,6 @@ nav {
 }
 
 /* CONTAINER PESQUISA */
-
 .search-container {
     transition: .3s ease;
 }
