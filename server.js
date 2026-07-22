@@ -66,6 +66,23 @@ app.get("/api/search", searchLimiter, async (req, res) => {
     }
 });
 
+// Lógica do cache
+const CACHE_DIR = path.join(__dirname, "cache");
+
+if (!fs.existsSync(CACHE_DIR)) {
+    fs.mkdirSync(CACHE_DIR);
+}
+
+// Extrai o ID do vídeo do YouTube da URL (funciona com formatos comuns)
+function getVideoId(url) {
+    const match = url.match(/(?:v=|\/)([a-zA-Z0-9_-]{11})(?:&|$|\?)/);
+    return match ? match[1] : null;
+}
+
+function getCachePath(videoId) {
+    return path.join(CACHE_DIR, `${videoId}.mp3`);
+}
+
 // STREAM
 app.get("/api/stream", heavyLimiter, async (req, res) => {
     try {
@@ -223,6 +240,35 @@ app.get("/api/download", heavyLimiter, async (req, res) => {
         res.status(500).send("Erro download");
     }
 });
+
+// Limpeza automática de cache antigo (evitar encher o disco)
+const CACHE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 dias
+
+function limparCacheAntigo() {
+    fs.readdir(CACHE_DIR, (err, files) => {
+        if (err) return console.log("Erro ao ler cache:", err);
+
+        const agora = Date.now();
+
+        files.forEach(file => {
+            const filePath = path.join(CACHE_DIR, file);
+
+            fs.stat(filePath, (err, stats) => {
+                if (err) return;
+
+                if (agora - stats.mtimeMs > CACHE_MAX_AGE_MS) {
+                    fs.unlink(filePath, () => {
+                        console.log(`Cache expirado removido: ${file}`);
+                    });
+                }
+            });
+        });
+    });
+}
+
+// Corre a cada 6 horas
+setInterval(limparCacheAntigo, 6 * 60 * 60 * 1000);
+limparCacheAntigo(); // roda uma vez ao iniciar
 
 // Listing
 app.listen(PORT, () => {
