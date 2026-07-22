@@ -151,7 +151,15 @@ app.get("/api/download", heavyLimiter, async (req, res) => {
             return res.status(400).send("URL inválida");
         }
 
+        const videoId = getVideoId(url);
+
+        if (!videoId) {
+            return res.status(400).send("URL do YouTube inválida");
+        }
+
+        const cachePath = getCachePath(videoId);
         const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
+
         const getTitulo = spawn(ytDlpPath, ["--print", "%(uploader)s - %(title)s", url]);
 
         let musicaNome = "";
@@ -173,9 +181,33 @@ app.get("/api/download", heavyLimiter, async (req, res) => {
             res.setHeader("Content-Disposition", `attachment; filename="${musicaNome}.mp3"`);
             res.setHeader("Content-Type", "audio/mpeg");
 
+            // JÁ EM CACHE -> serve direto
+            if (fs.existsSync(cachePath)) {
+                console.log(`Cache HIT (download): ${videoId}`);
+                return fs.createReadStream(cachePath).pipe(res);
+            }
+
+            console.log(`Cache MISS (download): ${videoId} - processando...`);
+
+            const tempPath = `${cachePath}.tmp`;
+            const cacheWriteStream = fs.createWriteStream(tempPath);
+
             const ytDlp = spawn(ytDlpPath, ["-x", "--audio-format", "mp3", "-o", "-", url]);
 
             ytDlp.stdout.pipe(res);
+            ytDlp.stdout.pipe(cacheWriteStream);
+
+            ytDlp.on("close", (code) => {
+                cacheWriteStream.end();
+
+                if (code === 0) {
+                    fs.rename(tempPath, cachePath, (err) => {
+                        if (err) console.log("Erro ao finalizar cache:", err);
+                    });
+                } else {
+                    fs.unlink(tempPath, () => {});
+                }
+            });
 
             ytDlp.stderr.on("data", data => {
                 console.log("yt-dlp erro:", data.toString());
@@ -192,6 +224,7 @@ app.get("/api/download", heavyLimiter, async (req, res) => {
     }
 });
 
+// Listing
 app.listen(PORT, () => {
     console.log(`Fleves Music: http://localhost:${PORT}`);
 });
