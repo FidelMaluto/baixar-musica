@@ -2,6 +2,7 @@ node_modules/
 
 music/
 temp/
+cache/
 bin/
 
 *.mp3

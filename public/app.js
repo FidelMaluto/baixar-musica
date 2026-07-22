@@ -1,7 +1,7 @@
 const results = document.getElementById("results");
 const player = document.getElementById("player");
 
-let lastSearchResults = [];
+let lastSearchResults = []; 
 
 async function searchMusic() {
   const q = document.getElementById("search").value.trim();
@@ -11,9 +11,7 @@ async function searchMusic() {
   results.innerHTML = "<h2>Pesquisando...</h2>";
 
   try {
-    const res = await fetch(
-      `/api/search?q=${encodeURIComponent(q)}`
-    );
+    const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
 
     const data = await res.json();
 
@@ -155,6 +153,7 @@ window.addEventListener("DOMContentLoaded", () => {
   if (savedResults.length > 0) {
     renderResults(savedResults);
   }
+  
 });
 
 document.getElementById("favoritosBtn").onclick = loadFavorites;
