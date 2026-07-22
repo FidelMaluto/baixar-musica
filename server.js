@@ -4,6 +4,7 @@ const yts = require("yt-search");
 const path = require("path");
 const fs = require("fs");
 const os = require("os");
+const rateLimit = require("express-rate-limit");
 
 const { spawn } = require("child_process");
 
@@ -14,8 +15,26 @@ app.use(express.static("public"));
 
 const PORT = process.env.PORT || 3100;
 
+// LIMITADOR GERAL (pesquisa) - mais permissivo
+const searchLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minuto
+    max: 30, // 30 pesquisas por minuto por IP
+    message: { error: "Demasiadas pesquisas. Tenta novamente em instantes." },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+// LIMITADOR PARA STREAM/DOWNLOAD - mais restritivo (operações caras)
+const heavyLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minuto
+    max: 10, // 10 stream/downloads por minuto por IP
+    message: { error: "Limite de reproduções/downloads atingido. Aguarda um pouco." },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
 // PESQUISA
-app.get("/api/search", async (req, res) => {
+app.get("/api/search", searchLimiter, async (req, res) => {
     try {
         const q = req.query.q;
 
@@ -48,7 +67,7 @@ app.get("/api/search", async (req, res) => {
 });
 
 // STREAM
-app.get("/api/stream", async (req, res) => {
+app.get("/api/stream", heavyLimiter, async (req, res) => {
     try {
         const url = req.query.url;
 
@@ -62,7 +81,6 @@ app.get("/api/stream", async (req, res) => {
         res.setHeader("Content-Type", "audio/mpeg");
 
         const ytDlp = spawn(ytDlpPath, ["--no-playlist", "-f", "bestaudio", "-o", "-", url]);
-
         const ffmpeg = spawn(ffmpegPath, ["-i", "pipe:0", "-f", "mp3", "-ab", "192k", "pipe:1"]);
 
         ytDlp.stdout.pipe(ffmpeg.stdin);
@@ -76,6 +94,12 @@ app.get("/api/stream", async (req, res) => {
             console.log("ffmpeg:", data.toString());
         });
 
+        // Limpar processos se o cliente desconectar (fecha o player, muda de página)
+        req.on("close", () => {
+            ytDlp.kill();
+            ffmpeg.kill();
+        });
+
     } catch (err) {
         console.log(err);
         res.status(500).send("Erro stream");
@@ -83,7 +107,7 @@ app.get("/api/stream", async (req, res) => {
 });
 
 // DOWNLOAD
-app.get("/api/download", async (req, res) => {
+app.get("/api/download", heavyLimiter, async (req, res) => {
     try {
         const url = req.query.url;
 
@@ -92,17 +116,14 @@ app.get("/api/download", async (req, res) => {
         }
 
         const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
-        // Pegando os títulos das músicas
         const getTitulo = spawn(ytDlpPath, ["--print", "%(uploader)s - %(title)s", url]);
 
         let musicaNome = "";
-        // Junção
         getTitulo.stdout.on("data", data => {
             musicaNome += data.toString();
         });
 
         getTitulo.on("close", () => {
-            // Validando caracteres especiais
             musicaNome = musicaNome
                 .trim()
                 .replace(/[\\/:*?"<>|]/g, "")
@@ -124,11 +145,13 @@ app.get("/api/download", async (req, res) => {
                 console.log("yt-dlp erro:", data.toString());
             });
 
+            req.on("close", () => {
+                ytDlp.kill();
+            });
         });
 
     } catch (err) {
         console.log(err);
-
         res.status(500).send("Erro download");
     }
 });
