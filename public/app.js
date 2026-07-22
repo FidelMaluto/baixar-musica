@@ -1,6 +1,8 @@
 const results = document.getElementById("results");
 const player = document.getElementById("player");
 
+let lastSearchResults = [];
+
 async function searchMusic() {
   const q = document.getElementById("search").value.trim();
 
@@ -22,11 +24,14 @@ async function searchMusic() {
           <p>Tente pesquisar outro artista ou título.</p>
         </div>
       `;
-
       return;
     }
 
     renderResults(data);
+
+    // Guardar a última pesquisa (agora dentro do escopo correto)
+    lastSearchResults = data;
+    localStorage.setItem("lastSearchResults", JSON.stringify(data));
 
   } catch (err) {
     console.error(err);
@@ -45,54 +50,61 @@ function renderResults(list) {
 
   list.forEach(song => {
     const card = document.createElement("div");
-
     card.className = "song";
 
-    card.innerHTML = `
-        <img src="${song.thumbnail}">
+    const img = document.createElement("img");
+    img.src = song.thumbnail;
 
-        <div class="song-content">
-            <h3>${song.title}</h3>
-            <p>${song.author}</p>
-            <small>${song.duration}</small>
+    const content = document.createElement("div");
+    content.className = "song-content";
 
-            <div class="actions">
-                <button class="play-btn"> ▶ </button>
-                <button class="favorite-btn"> ❤️ </button>
+    const title = document.createElement("h3");
+    title.textContent = song.title;
 
-                <a class="download-btn" href="/api/download?url=${encodeURIComponent(song.url)}"> ⬇ </a>
-            </div>
-        </div>
-    `;
+    const author = document.createElement("p");
+    author.textContent = song.author;
 
-    // PLAY
-    card.querySelector(".play-btn").onclick = async () => {
+    const duration = document.createElement("small");
+    duration.textContent = song.duration;
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    const playBtn = document.createElement("button");
+    playBtn.className = "play-btn";
+    playBtn.textContent = "▶";
+
+    const favBtn = document.createElement("button");
+    favBtn.className = "favorite-btn";
+    favBtn.textContent = "❤️";
+
+    const downloadBtn = document.createElement("a");
+    downloadBtn.className = "download-btn";
+    downloadBtn.href = `/api/download?url=${encodeURIComponent(song.url)}`;
+    downloadBtn.textContent = "⬇";
+
+    playBtn.onclick = async () => {
       try {
         player.pause();
-
         player.src = `/api/stream?url=${encodeURIComponent(song.url)}`;
-
         player.load();
-
         await player.play();
 
         document.getElementById("now-playing").textContent = song.title;
         document.getElementById("artist-playing").textContent = song.author;
-
       } catch (err) {
         console.log(err);
       }
-
     };
 
-    // FAVORITO
-    card.querySelector(".favorite-btn").onclick = () => {
-      saveFavorite(song);
-    };
+    favBtn.onclick = () => saveFavorite(song);
+
+    actions.append(playBtn, favBtn, downloadBtn);
+    content.append(title, author, duration, actions);
+    card.append(img, content);
 
     results.appendChild(card);
   });
-
 }
 
 // FAVORITOS
@@ -102,12 +114,10 @@ function getFavorites() {
 
 function saveFavorite(song) {
   let favorites = getFavorites();
-
   const exists = favorites.find(s => s.url === song.url);
 
   if (exists) {
     favorites = favorites.filter(s => s.url !== song.url);
-
   } else {
     favorites.push(song);
   }
@@ -116,41 +126,36 @@ function saveFavorite(song) {
 }
 
 function loadFavorites() {
-  const favorites = getFavorites();
-
-  renderResults(favorites);
+  renderResults(getFavorites());
 }
 
 // TRENDING
 async function loadTrending() {
   const trends = [
-    "Força Suprema",
-    "C4 Pedro",
-    "Chelsea Dinorath",
-    "DJ-AKM",
-    "POP SMOKE",
-    "Calema",
-    "Michael Jackson"
+    "Força Suprema", "C4 Pedro", "Chelsea Dinorath",
+    "DJ-AKM", "POP SMOKE", "Calema", "Michael Jackson"
   ];
 
-  // Buscando simulação de tendências
   const random = trends[Math.floor(Math.random() * trends.length)];
-  const res = await fetch(`/api/search?q=${encodeURIComponent(random)}`);
-  const data = await res.json();
 
-  renderResults(data);
+  try {
+    const res = await fetch(`/api/search?q=${encodeURIComponent(random)}`);
+    const data = await res.json();
+    renderResults(data);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
-// Mantendo os dados da última pesquisa na página inicial
-lastSearchResults = data;
+// Carregar última pesquisa ao abrir o site
+window.addEventListener("DOMContentLoaded", () => {
+  const savedResults = JSON.parse(localStorage.getItem("lastSearchResults")) || [];
+  lastSearchResults = savedResults;
 
-localStorage.setItem("lastSearchResults", JSON.stringify(data));
+  if (savedResults.length > 0) {
+    renderResults(savedResults);
+  }
+});
 
-// Ao abrir o site
-const savedResults = JSON.parse(localStorage.getItem("lastSearchResults")) || [];
-
-lastSearchResults = savedResults;
-
-// BOTÕES para apresentar as tendências e as favoritas
 document.getElementById("favoritosBtn").onclick = loadFavorites;
 document.getElementById("trendingBtn").onclick = loadTrending;
