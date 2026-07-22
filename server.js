@@ -75,16 +75,53 @@ app.get("/api/stream", heavyLimiter, async (req, res) => {
             return res.status(400).send("URL inválida");
         }
 
-        const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
-        const ffmpegPath = path.join(__dirname, "bin", "ffmpeg.exe");
+        const videoId = getVideoId(url);
+
+        if (!videoId) {
+            return res.status(400).send("URL do YouTube inválida");
+        }
+
+        const cachePath = getCachePath(videoId);
 
         res.setHeader("Content-Type", "audio/mpeg");
+
+        // JÁ EM CACHE -> serve direto do disco
+        if (fs.existsSync(cachePath)) {
+            console.log(`Cache HIT: ${videoId}`);
+            return fs.createReadStream(cachePath).pipe(res);
+        }
+
+        console.log(`Cache MISS: ${videoId} - processando...`);
+
+        const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
+        const ffmpegPath = path.join(__dirname, "bin", "ffmpeg.exe");
 
         const ytDlp = spawn(ytDlpPath, ["--no-playlist", "-f", "bestaudio", "-o", "-", url]);
         const ffmpeg = spawn(ffmpegPath, ["-i", "pipe:0", "-f", "mp3", "-ab", "192k", "pipe:1"]);
 
         ytDlp.stdout.pipe(ffmpeg.stdin);
+
+        // Grava em cache (ficheiro temporário primeiro, evita cache corrompido se falhar a meio)
+        const tempPath = `${cachePath}.tmp`;
+        const cacheWriteStream = fs.createWriteStream(tempPath);
+
         ffmpeg.stdout.pipe(res);
+        ffmpeg.stdout.pipe(cacheWriteStream);
+
+        ffmpeg.on("close", (code) => {
+            cacheWriteStream.end();
+
+            if (code === 0) {
+                // Sucesso -> renomeia de .tmp para definitivo
+                fs.rename(tempPath, cachePath, (err) => {
+                    if (err) console.log("Erro ao finalizar cache:", err);
+                    else console.log(`Cache salvo: ${videoId}`);
+                });
+            } else {
+                // Falhou -> remove o ficheiro temporário incompleto
+                fs.unlink(tempPath, () => {});
+            }
+        });
 
         ytDlp.stderr.on("data", data => {
             console.log("yt-dlp:", data.toString());
@@ -94,7 +131,6 @@ app.get("/api/stream", heavyLimiter, async (req, res) => {
             console.log("ffmpeg:", data.toString());
         });
 
-        // Limpar processos se o cliente desconectar (fecha o player, muda de página)
         req.on("close", () => {
             ytDlp.kill();
             ffmpeg.kill();
