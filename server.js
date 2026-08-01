@@ -110,8 +110,10 @@ app.get("/api/stream", heavyLimiter, async (req, res) => {
 
         console.log(`Cache MISS: ${videoId} - processando...`);
 
-        const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
-        const ffmpegPath = path.join(__dirname, "bin", "ffmpeg.exe");
+        // const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
+        // const ffmpegPath = path.join(__dirname, "bin", "ffmpeg.exe");
+        const ytDlpPath = "yt-dlp";
+        const ffmpegPath = "ffmpeg";
 
         const ytDlp = spawn(ytDlpPath, ["--no-playlist", "-f", "bestaudio", "-o", "-", url]);
         const ffmpeg = spawn(ffmpegPath, ["-i", "pipe:0", "-f", "mp3", "-ab", "192k", "pipe:1"]);
@@ -136,7 +138,7 @@ app.get("/api/stream", heavyLimiter, async (req, res) => {
                 });
             } else {
                 // Falhou -> remove o ficheiro temporário incompleto
-                fs.unlink(tempPath, () => {});
+                fs.unlink(tempPath, () => { });
             }
         });
 
@@ -175,7 +177,8 @@ app.get("/api/download", heavyLimiter, async (req, res) => {
         }
 
         const cachePath = getCachePath(videoId);
-        const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
+        // const ytDlpPath = path.join(__dirname, "bin", "yt-dlp.exe");
+        const ytDlpPath = "yt-dlp";
 
         const getTitulo = spawn(ytDlpPath, ["--print", "%(uploader)s - %(title)s", url]);
 
@@ -222,7 +225,7 @@ app.get("/api/download", heavyLimiter, async (req, res) => {
                         if (err) console.log("Erro ao finalizar cache:", err);
                     });
                 } else {
-                    fs.unlink(tempPath, () => {});
+                    fs.unlink(tempPath, () => { });
                 }
             });
 
