@@ -49,17 +49,16 @@
         </div>
     </aside>
 
-
     <!-- MAIN -->
     <main class="main-content">
         <!-- BOTÃO PESQUISA MOBILE -->
-        <button id="searchToggle" class="search-toggle">🔍</button>
+        <button id="searchToggle" class="search-toggle"><i class="fa-solid fa-magnifying-glass"></i></button>
 
         <!-- TOPBAR -->
         <header class="topbar">
 
             <div class="hero-text">
-                <h1>Descubra novas músicas 🎧</h1>
+                <h1>Descubra novas músicas</h1>
                 <p>Streaming e downloads ilimitados</p>
             </div>
 
@@ -151,11 +150,11 @@
 
             if (searchContainer.classList.contains("active")) {
                 searchToggle.style.background = "#ef4444"
-                searchToggle.textContent = "✖";
+                searchToggle.innerHTML = `<i class="fa-solid fa-circle-xmark"></i>`;
 
             } else {
                 searchToggle.style.background = "linear-gradient(135deg, #22c55e, #15803d)";
-                searchToggle.textContent = "🔍";
+                searchToggle.innerHTML = `<i class="fa-solid fa-magnifying-glass"></i>`;
 
             }
 

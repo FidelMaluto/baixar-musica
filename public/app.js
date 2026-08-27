@@ -70,16 +70,16 @@ function renderResults(list) {
 
     const playBtn = document.createElement("button");
     playBtn.className = "play-btn";
-    playBtn.textContent = "▶";
+    playBtn.innerHTML = `<i class="fa-solid fa-play"></i>`;
 
     const favBtn = document.createElement("button");
     favBtn.className = "favorite-btn";
-    favBtn.textContent = "❤️";
+    favBtn.innerHTML = `<i class="fa-solid fa-heart"></i>`;
 
     const downloadBtn = document.createElement("a");
     downloadBtn.className = "download-btn";
     downloadBtn.href = `/api/download?url=${encodeURIComponent(song.url)}`;
-    downloadBtn.textContent = "⬇";
+    downloadBtn.innerHTML = `<i class="fa-solid fa-download"></i>`;
 
     playBtn.onclick = async () => {
       try {
