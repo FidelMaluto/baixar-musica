@@ -13,5 +13,6 @@ dist/
 
 uploads/
 .cache/
+cache/
 
 tutorial.txt
