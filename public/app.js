@@ -158,3 +158,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 document.getElementById("favoritosBtn").onclick = loadFavorites;
 document.getElementById("trendingBtn").onclick = loadTrending;
+// Pesquisar com um click no Enter
+document.getElementById('search').addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') searchMusic();
+});
