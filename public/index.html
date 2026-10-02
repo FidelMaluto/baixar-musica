@@ -12,10 +12,7 @@
 
     <title>Fleves Music</title>
 
-    <!-- =====================================================
-         FONTES
-         ===================================================== -->
-
+    <!-- FONTES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,55 +20,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
-    <!-- =====================================================
-         ÍCONES
-         Bootstrap Icons
-         ===================================================== -->
-
+    <!-- ÍCONES Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- =====================================================
-         CSS
-         ===================================================== -->
-
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- =====================================================
-         JAVASCRIPT
-         ===================================================== -->
-
+    <!-- JAVASCRIPT -->
     <script src="app.js" defer></script>
 </head>
 
 <body>
 
-    <!-- =====================================================
-         OVERLAY MOBILE
-         ===================================================== -->
-
+    <!-- OVERLAY MOBILE -->
     <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
 
-
-    <!-- =====================================================
-         BOTÃO MENU MOBILE
-         ===================================================== -->
-
+    <!-- BOTÃO MENU MOBILE -->
     <button id="menuToggle" class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false"
         aria-controls="sidebar">
         <i class="bi bi-list"></i>
     </button>
 
 
-    <!-- =====================================================
-         SIDEBAR
-         ===================================================== -->
-
+    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
-
         <div>
 
             <!-- LOGO -->
-
             <div class="logo">
 
                 <div class="logo-icon">
@@ -87,14 +62,12 @@
 
 
             <!-- NAVEGAÇÃO -->
-
             <nav aria-label="Navegação principal">
 
                 <button type="button" class="nav-btn active" id="homeBtn">
                     <i class="bi bi-house-door-fill"></i>
                     <span>Início</span>
                 </button>
-
 
                 <button type="button" class="nav-btn" id="trendingBtn">
                     <i class="bi bi-fire"></i>
@@ -111,9 +84,7 @@
 
         </div>
 
-
         <!-- FOOTER SIDEBAR -->
-
         <div class="sidebar-footer">
             <p>© 2026 Fleves Music</p>
             <p>Ouça. Descubra. Desfrute.</p>
@@ -121,18 +92,10 @@
 
     </aside>
 
-
-    <!-- =====================================================
-         CONTEÚDO PRINCIPAL
-         ===================================================== -->
-
+    <!-- CONTEÚDO PRINCIPAL -->
     <main class="main-content">
 
-
-        <!-- =================================================
-             TOPBAR
-             ================================================= -->
-
+        <!-- TOPBAR -->
         <header class="topbar" id="topbar">
 
             <div class="hero-text">
@@ -149,20 +112,14 @@
             </div>
 
 
-            <!-- =============================================
-                 BOTÃO PESQUISA MOBILE
-                 ============================================= -->
-
+            <!-- BOTÃO PESQUISA MOBILE -->
             <button id="searchToggle" class="search-toggle" type="button" aria-label="Abrir pesquisa"
                 aria-expanded="false">
                 <i class="bi bi-search"></i>
             </button>
 
 
-            <!-- =============================================
-                 PESQUISA
-                 ============================================= -->
-
+            <!-- PESQUISA -->
             <div id="searchContainer" class="search-container">
 
                 <button id="closeSearch" class="close-search" type="button" aria-label="Fechar pesquisa">
@@ -187,17 +144,12 @@
 
         </header>
 
-
-        <!-- =================================================
-             RESULTADOS
-             ================================================= -->
-
+        <!-- RESULTADOS -->
         <section class="results-section" aria-labelledby="resultsTitle">
 
             <h2 id="resultsTitle" class="section-title">
                 Resultados
             </h2>
-
 
             <div id="results" class="songs-grid"></div>
 
@@ -205,19 +157,13 @@
 
     </main>
 
-
-    <!-- =====================================================
-         PLAYER
-         ===================================================== -->
-
+    <!-- PLAYER -->
     <footer class="player" id="player1" aria-label="Player de música">
 
         <!-- INFORMAÇÕES DA MÚSICA -->
-
         <div class="player-left">
 
             <div class="music-disc" id="musicDisc" aria-hidden="true"></div>
-
 
             <div class="music-info">
 
@@ -233,68 +179,44 @@
 
         </div>
 
-
         <!-- ÁUDIO -->
-
         <audio id="player" controls preload="metadata">
             O teu navegador não suporta o elemento de áudio.
         </audio>
 
     </footer>
 
-
-    <!-- =====================================================
-         CONTROLES DA INTERFACE
-         ===================================================== -->
-
+    <!-- CONTROLES DA INTERFACE -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
 
-            /* =================================================
-               ELEMENTOS
-               ================================================= */
+            // ELEMENTOS
+            const menuToggle = document.getElementById("menuToggle");
 
-            const menuToggle =
-                document.getElementById("menuToggle");
+            const sidebar = document.getElementById("sidebar");
 
-            const sidebar =
-                document.getElementById("sidebar");
+            const sidebarOverlay = document.getElementById("sidebarOverlay");
 
-            const sidebarOverlay =
-                document.getElementById("sidebarOverlay");
+            const topbar = document.getElementById("topbar");
 
-            const topbar =
-                document.getElementById("topbar");
+            const playerContainer = document.getElementById("player1");
 
-            const playerContainer =
-                document.getElementById("player1");
+            const audioPlayer = document.getElementById("player");
 
-            const audioPlayer =
-                document.getElementById("player");
+            const musicDisc = document.getElementById("musicDisc");
 
-            const musicDisc =
-                document.getElementById("musicDisc");
+            const searchToggle = document.getElementById("searchToggle");
 
-            const searchToggle =
-                document.getElementById("searchToggle");
+            const searchContainer = document.getElementById("searchContainer");
 
-            const searchContainer =
-                document.getElementById("searchContainer");
+            const closeSearch = document.getElementById("closeSearch");
 
-            const closeSearch =
-                document.getElementById("closeSearch");
+            const searchInput = document.getElementById("search");
 
-            const searchInput =
-                document.getElementById("search");
-
-            const searchButton =
-                document.getElementById("searchButton");
+            const searchButton = document.getElementById("searchButton");
 
 
-            /* =================================================
-               SIDEBAR
-               ================================================= */
-
+            // SIDEBAR
             function openSidebar() {
 
                 sidebar.classList.add("active");
@@ -303,20 +225,12 @@
                     sidebarOverlay.classList.add("active");
                 }
 
-                menuToggle.setAttribute(
-                    "aria-expanded",
-                    "true"
-                );
+                menuToggle.setAttribute("aria-expanded", "true");
 
-                menuToggle.setAttribute(
-                    "aria-label",
-                    "Fechar menu"
-                );
+                menuToggle.setAttribute("aria-label", "Fechar menu");
 
-                menuToggle.innerHTML =
-                    '<i class="bi bi-x-lg"></i>';
+                menuToggle.innerHTML = '<i class="bi bi-x-lg"></i>';
             }
-
 
             function closeSidebar() {
 
@@ -326,26 +240,17 @@
                     sidebarOverlay.classList.remove("active");
                 }
 
-                menuToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
+                menuToggle.setAttribute("aria-expanded", "false");
 
-                menuToggle.setAttribute(
-                    "aria-label",
-                    "Abrir menu"
-                );
+                menuToggle.setAttribute("aria-label", "Abrir menu");
 
-                menuToggle.innerHTML =
-                    '<i class="bi bi-list"></i>';
+                menuToggle.innerHTML = '<i class="bi bi-list"></i>';
             }
 
 
             function toggleSidebar() {
 
-                if (
-                    sidebar.classList.contains("active")
-                ) {
+                if (sidebar.classList.contains("active")) {
                     closeSidebar();
                 } else {
                     openSidebar();
@@ -353,149 +258,87 @@
 
             }
 
-
-            menuToggle.addEventListener(
-                "click",
-                toggleSidebar
-            );
-
+            menuToggle.addEventListener("click", toggleSidebar);
 
             if (sidebarOverlay) {
 
-                sidebarOverlay.addEventListener(
-                    "click",
-                    closeSidebar
-                );
+                sidebarOverlay.addEventListener("click", closeSidebar);
 
             }
 
-
             /* Fechar menu ao clicar num item */
-
-            document
-                .querySelectorAll(".nav-btn")
+            document.querySelectorAll(".nav-btn")
                 .forEach(button => {
 
-                    button.addEventListener(
-                        "click",
-                        () => {
+                    button.addEventListener("click", () => {
 
-                            document
-                                .querySelectorAll(".nav-btn")
+                            document.querySelectorAll(".nav-btn")
                                 .forEach(btn => {
                                     btn.classList.remove("active");
                                 });
 
                             button.classList.add("active");
 
-                            if (
-                                window.innerWidth <= 900
-                            ) {
+                            if (window.innerWidth <= 900) {
                                 closeSidebar();
                             }
 
-                        }
-                    );
+                        });
+                });
+
+            // FECHAR SIDEBAR COM ESC
+            document.addEventListener("keydown", event => {
+
+                    if (event.key === "Escape" && sidebar.classList.contains("active")) {
+                        closeSidebar();
+                    }
 
                 });
 
-
-            /* =================================================
-               FECHAR SIDEBAR COM ESC
-               ================================================= */
-
-            document.addEventListener(
-                "keydown",
-                event => {
-
-                    if (
-                        event.key === "Escape" &&
-                        sidebar.classList.contains("active")
-                    ) {
-
-                        closeSidebar();
-
-                    }
-
-                }
-            );
-
-
-            /* =================================================
-               PLAYER
-               ================================================= */
-
+            // PLAYER
             function updatePlayerState() {
 
                 if (!audioPlayer) {
                     return;
                 }
 
-                if (
-                    !audioPlayer.paused &&
-                    !audioPlayer.ended
-                ) {
+                if (!audioPlayer.paused && !audioPlayer.ended) {
 
-                    playerContainer.classList.add(
-                        "is-playing"
-                    );
+                    playerContainer.classList.add("is-playing");
 
                 } else {
 
-                    playerContainer.classList.remove(
-                        "is-playing"
-                    );
+                    playerContainer.classList.remove("is-playing");
 
                 }
 
             }
 
-
             if (audioPlayer) {
 
-                audioPlayer.addEventListener(
-                    "play",
-                    updatePlayerState
-                );
+                audioPlayer.addEventListener("play", updatePlayerState);
 
-                audioPlayer.addEventListener(
-                    "pause",
-                    updatePlayerState
-                );
+                audioPlayer.addEventListener("pause", updatePlayerState);
 
-                audioPlayer.addEventListener(
-                    "ended",
-                    updatePlayerState
-                );
+                audioPlayer.addEventListener("ended", updatePlayerState);
 
             }
 
-
-            /* =================================================
-               SCROLL
-               ================================================= */
-
+            // SCROLL
             let lastScroll = 0;
 
             let scrollTicking = false;
 
-
             function handleScroll() {
 
-                const currentScroll =
-                    window.scrollY ||
-                    window.pageYOffset;
+                const currentScroll = window.scrollY || window.pageYOffset;
 
-
-                /* Nunca esconder no topo */
-
+                // Nunca esconder no topo
                 if (currentScroll <= 50) {
 
                     topbar.classList.remove("hide");
 
-                    playerContainer.classList.remove(
-                        "hide"
-                    );
+                    playerContainer.classList.remove("hide");
 
                     lastScroll = currentScroll;
 
@@ -503,46 +346,28 @@
 
                 }
 
-
-                /* Descendo */
-
-                if (
-                    currentScroll > lastScroll &&
-                    currentScroll > 100
-                ) {
+                // Descendo
+                if (currentScroll > lastScroll && currentScroll > 100) {
 
                     topbar.classList.add("hide");
 
-                    /*
-                     * No mobile mantemos o player.
-                     * Ele é importante para controlar
-                     * a música.
-                     */
-
+                    // No mobile mantemos o player. Ele é importante para controlar a música.
                     if (window.innerWidth > 768) {
 
-                        playerContainer.classList.add(
-                            "hide"
-                        );
+                        playerContainer.classList.add("hide");
 
                     }
 
                 }
 
-                /* Subindo */
-
-                else if (
-                    currentScroll < lastScroll
-                ) {
+                // Subindo
+                else if (currentScroll < lastScroll) {
 
                     topbar.classList.remove("hide");
 
-                    playerContainer.classList.remove(
-                        "hide"
-                    );
+                    playerContainer.classList.remove("hide");
 
                 }
-
 
                 lastScroll = currentScroll;
 
@@ -550,16 +375,11 @@
 
             }
 
-
-            window.addEventListener(
-                "scroll",
-                () => {
+            window.addEventListener("scroll", () => {
 
                     if (!scrollTicking) {
 
-                        window.requestAnimationFrame(
-                            handleScroll
-                        );
+                        window.requestAnimationFrame(handleScroll);
 
                         scrollTicking = true;
 
@@ -572,23 +392,14 @@
             );
 
 
-            /* =================================================
-               PESQUISA MOBILE
-               ================================================= */
-
+            // PESQUISA MOBILE
             function openSearch() {
 
-                searchContainer.classList.add(
-                    "active"
-                );
+                searchContainer.classList.add("active");
 
-                searchToggle.setAttribute(
-                    "aria-expanded",
-                    "true"
-                );
+                searchToggle.setAttribute("aria-expanded", "true");
 
-                document.body.style.overflow =
-                    "hidden";
+                document.body.style.overflow = "hidden";
 
                 setTimeout(() => {
 
@@ -600,162 +411,82 @@
 
             }
 
-
             function closeSearchPanel() {
 
-                searchContainer.classList.remove(
-                    "active"
-                );
+                searchContainer.classList.remove("active");
 
-                searchToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
+                searchToggle.setAttribute("aria-expanded", "false");
 
                 document.body.style.overflow = "";
 
             }
 
+            searchToggle.addEventListener("click", openSearch);
 
-            searchToggle.addEventListener(
-                "click",
-                openSearch
-            );
+            closeSearch.addEventListener("click", closeSearchPanel);
 
+            // ESC fecha pesquisa
 
-            closeSearch.addEventListener(
-                "click",
-                closeSearchPanel
-            );
-
-
-            /* ESC fecha pesquisa */
-
-            document.addEventListener(
-                "keydown",
-                event => {
-
-                    if (
-                        event.key === "Escape" &&
-                        searchContainer.classList.contains(
-                            "active"
-                        )
-                    ) {
-
+            document.addEventListener("keydown", event => {
+                    if (event.key === "Escape" && searchContainer.classList.contains("active")) {
                         closeSearchPanel();
-
                     }
 
-                }
-            );
+                });
 
-
-            /* =================================================
-               PESQUISA COM ENTER
-               ================================================= */
-
+            // PESQUISA COM ENTER
             if (searchInput) {
 
-                searchInput.addEventListener(
-                    "keydown",
-                    event => {
+                searchInput.addEventListener("keydown", event => {
 
-                        if (
-                            event.key === "Enter"
-                        ) {
+                        if (event.key === "Enter") {
 
                             event.preventDefault();
 
-                            if (
-                                typeof window.searchMusic ===
-                                "function"
-                            ) {
-
+                            if (typeof window.searchMusic === "function") {
                                 window.searchMusic();
-
                             }
 
                         }
 
-                    }
-                );
+                    });
 
             }
 
-
-            /* =================================================
-               BOTÃO PESQUISAR
-               ================================================= */
-
+            // BOTÃO PESQUISAR
             if (searchButton) {
 
-                searchButton.addEventListener(
-                    "click",
-                    () => {
+                searchButton.addEventListener("click", () => {
 
-                        if (
-                            typeof window.searchMusic ===
-                            "function"
-                        ) {
-
+                        if (typeof window.searchMusic === "function") {
                             window.searchMusic();
-
                         }
 
-                    }
-                );
+                    });
 
             }
 
+            // FECHAR PESQUISA AO CLICAR FORA SOMENTE MOBILE
+            searchContainer.addEventListener("click", event => {
 
-            /* =================================================
-               FECHAR PESQUISA AO CLICAR FORA
-               SOMENTE MOBILE
-               ================================================= */
-
-            searchContainer.addEventListener(
-                "click",
-                event => {
-
-                    if (
-                        event.target === searchContainer &&
-                        window.innerWidth <= 768
-                    ) {
-
+                    if (event.target === searchContainer && window.innerWidth <= 768) {
                         closeSearchPanel();
-
                     }
 
-                }
-            );
+                });
 
+            // RESPONSIVIDADE AO REDIMENSIONAR
+            window.addEventListener("resize", () => {
 
-            /* =================================================
-               RESPONSIVIDADE AO REDIMENSIONAR
-               ================================================= */
-
-            window.addEventListener(
-                "resize",
-                () => {
-
-                    if (
-                        window.innerWidth > 900
-                    ) {
-
+                    if (window.innerWidth > 900) {
                         closeSidebar();
-
                     }
 
-                    if (
-                        window.innerWidth > 768
-                    ) {
-
+                    if (window.innerWidth > 768) {
                         closeSearchPanel();
-
                     }
 
-                }
-            );
+                });
 
         });
     </script>
