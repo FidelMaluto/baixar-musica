@@ -1,12 +1,4 @@
-/* =========================================================
-   MUSIC PLAYER / DOWNLOAD
-   CSS RESPONSIVO COMPLETO
-   ========================================================= */
-
-/* =========================================================
-   RESET
-   ========================================================= */
-
+/* RESET */
 *,
 *::before,
 *::after {
@@ -56,18 +48,14 @@ a {
     color: inherit;
 }
 
-/* =========================================================
-   SELEÇÃO
-   ========================================================= */
+/* SELEÇÃO */
 
 ::selection {
     background: rgba(34, 197, 94, 0.35);
     color: #ffffff;
 }
 
-/* =========================================================
-   SCROLLBAR
-   ========================================================= */
+/* SCROLLBAR */
 
 ::-webkit-scrollbar {
     width: 8px;
@@ -93,40 +81,29 @@ a {
     scrollbar-color: #1e293b #07111f;
 }
 
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
+/* SIDEBAR */
 
 .sidebar {
     width: 260px;
     height: 100dvh;
-
     position: fixed;
     top: 0;
     left: 0;
-
     background: rgba(15, 23, 42, 0.94);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
-
     border-right: 1px solid rgba(255, 255, 255, 0.06);
-
     padding: 24px 18px;
-
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
     z-index: 1000;
-
     transition:
         transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
         box-shadow 0.4s ease;
 }
 
-/* =========================================================
-   LOGO
-   ========================================================= */
+/* LOGO */
 
 .logo {
     display: flex;
@@ -138,11 +115,8 @@ a {
 .logo-icon {
     width: 58px;
     height: 58px;
-
     flex: 0 0 58px;
-
     border-radius: 18px;
-
     background:
         linear-gradient(
             135deg,
@@ -150,17 +124,13 @@ a {
             #16a34a 55%,
             #15803d 100%
         );
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-size: 27px;
-
     box-shadow:
         0 12px 30px rgba(34, 197, 94, 0.22),
         inset 0 1px 1px rgba(255, 255, 255, 0.18);
-
     transition:
         transform 0.35s ease,
         box-shadow 0.35s ease;
@@ -186,9 +156,7 @@ a {
     color: #94a3b8;
 }
 
-/* =========================================================
-   NAVEGAÇÃO
-   ========================================================= */
+/* NAVEGAÇÃO */
 
 nav {
     display: flex;
@@ -199,26 +167,18 @@ nav {
 .nav-btn {
     width: 100%;
     min-height: 52px;
-
     border: 1px solid transparent;
     background: rgba(17, 24, 39, 0.78);
-
     color: #ffffff;
-
     padding: 14px 16px;
     border-radius: 16px;
-
     display: flex;
     align-items: center;
     gap: 12px;
-
     cursor: pointer;
-
     font-size: 14px;
     font-weight: 500;
-
     text-align: left;
-
     transition:
         transform 0.25s ease,
         background 0.25s ease,
@@ -233,11 +193,8 @@ nav {
             rgba(34, 197, 94, 0.95),
             rgba(21, 128, 61, 0.95)
         );
-
     transform: translateX(5px);
-
     border-color: rgba(255, 255, 255, 0.08);
-
     box-shadow:
         0 10px 25px rgba(34, 197, 94, 0.16);
 }
@@ -249,18 +206,14 @@ nav {
             #22c55e,
             #15803d
         );
-
-    box-shadow:
-        0 10px 25px rgba(34, 197, 94, 0.20);
+    box-shadow: 0 10px 25px rgba(34, 197, 94, 0.20);
 }
 
 .nav-btn:active {
     transform: scale(0.97);
 }
 
-/* =========================================================
-   FOOTER SIDEBAR
-   ========================================================= */
+/* FOOTER SIDEBAR */
 
 .sidebar-footer {
     text-align: center;
@@ -270,24 +223,18 @@ nav {
     padding-top: 20px;
 }
 
-/* =========================================================
-   OVERLAY MOBILE
-   ========================================================= */
+/* OVERLAY MOBILE */
 
 .sidebar-overlay {
     position: fixed;
     inset: 0;
-
     background: rgba(0, 0, 0, 0.55);
     backdrop-filter: blur(3px);
     -webkit-backdrop-filter: blur(3px);
-
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-
     z-index: 900;
-
     transition:
         opacity 0.35s ease,
         visibility 0.35s ease;
@@ -299,35 +246,24 @@ nav {
     pointer-events: auto;
 }
 
-/* =========================================================
-   MAIN
-   ========================================================= */
+/* MAIN */
 
 .main-content {
     margin-left: 260px;
-
     width: calc(100% - 260px);
-
     min-height: 100vh;
-
     padding: 32px clamp(20px, 3vw, 45px);
     padding-bottom: 170px;
 }
 
-/* =========================================================
-   TOPBAR
-   ========================================================= */
+/* TOPBAR */
 
 .topbar {
     position: sticky;
     top: 0;
-
     z-index: 500;
-
     margin-bottom: 34px;
-
     padding: 15px 0 20px;
-
     background:
         linear-gradient(
             180deg,
@@ -335,10 +271,8 @@ nav {
             rgba(7, 17, 31, 0.84) 75%,
             rgba(7, 17, 31, 0) 100%
         );
-
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-
     transition:
         transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
         opacity 0.35s ease;
@@ -364,9 +298,7 @@ nav {
     margin-bottom: 20px;
 }
 
-/* =========================================================
-   SEARCH
-   ========================================================= */
+/* SEARCH */
 
 .search-container {
     width: 100%;
@@ -377,31 +309,22 @@ nav {
 
 .search-box {
     width: 100%;
-
     display: flex;
     align-items: stretch;
-
     gap: 10px;
 }
 
 .search-box input {
     flex: 1;
     min-width: 0;
-
     height: 56px;
-
     padding: 0 18px;
-
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 17px;
-
     outline: none;
-
     background: rgba(17, 24, 39, 0.88);
     color: #ffffff;
-
     font-size: 14px;
-
     transition:
         border-color 0.25s ease,
         box-shadow 0.25s ease,
@@ -414,9 +337,7 @@ nav {
 
 .search-box input:focus {
     background: rgba(17, 24, 39, 1);
-
     border-color: rgba(34, 197, 94, 0.35);
-
     box-shadow:
         0 0 0 4px rgba(34, 197, 94, 0.10),
         0 10px 30px rgba(0, 0, 0, 0.12);
@@ -425,29 +346,20 @@ nav {
 .search-box button {
     min-width: 125px;
     height: 56px;
-
     border: none;
     border-radius: 17px;
-
     background:
         linear-gradient(
             135deg,
             #22c55e,
             #15803d
         );
-
     color: #ffffff;
-
     padding: 0 24px;
-
     cursor: pointer;
-
     font-size: 14px;
     font-weight: 600;
-
-    box-shadow:
-        0 10px 25px rgba(34, 197, 94, 0.12);
-
+    box-shadow: 0 10px 25px rgba(34, 197, 94, 0.12);
     transition:
         transform 0.25s ease,
         box-shadow 0.25s ease;
@@ -455,33 +367,24 @@ nav {
 
 .search-box button:hover {
     transform: translateY(-2px);
-
-    box-shadow:
-        0 14px 30px rgba(34, 197, 94, 0.20);
+    box-shadow: 0 14px 30px rgba(34, 197, 94, 0.20);
 }
 
 .search-box button:active {
     transform: scale(0.97);
 }
 
-/* =========================================================
-   SEARCH MOBILE BUTTON
-   ========================================================= */
+/* SEARCH MOBILE BUTTON */
 
 .search-toggle {
     display: none;
-
     position: fixed;
-
     top: 14px;
     right: 14px;
-
     width: 48px;
     height: 48px;
-
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 50%;
-
     background:
         linear-gradient(
             135deg,
@@ -490,19 +393,12 @@ nav {
         );
 
     color: #ffffff;
-
     align-items: center;
     justify-content: center;
-
     font-size: 20px;
-
     cursor: pointer;
-
     z-index: 3000;
-
-    box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.25);
-
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
     transition:
         transform 0.25s ease,
         box-shadow 0.25s ease;
@@ -516,29 +412,20 @@ nav {
     transform: scale(0.94);
 }
 
-/* =========================================================
-   CLOSE SEARCH
-   ========================================================= */
+/* CLOSE SEARCH */
 
 .close-search {
     display: none;
-
     width: 44px;
     height: 44px;
-
     margin-left: auto;
     margin-bottom: 18px;
-
     border: none;
     border-radius: 50%;
-
     background: #ef4444;
     color: #ffffff;
-
     font-size: 17px;
-
     cursor: pointer;
-
     transition:
         transform 0.25s ease,
         background 0.25s ease;
@@ -549,43 +436,32 @@ nav {
     transform: rotate(90deg);
 }
 
-/* =========================================================
-   SECTION
-   ========================================================= */
+/* SECTION */
 
 .section-title {
     font-size: clamp(22px, 2.4vw, 29px);
     font-weight: 700;
     line-height: 1.2;
-
     margin-bottom: 22px;
-
     letter-spacing: -0.4px;
 }
 
-/* =========================================================
-   SONGS GRID
-   ========================================================= */
+/* SONGS GRID */
 
 .songs-grid {
     display: grid;
-
     grid-template-columns:
         repeat(
             auto-fill,
             minmax(220px, 1fr)
         );
-
     gap: 22px;
 }
 
-/* =========================================================
-   SONG CARD
-   ========================================================= */
+/* SONG CARD */
 
 .song {
     min-width: 0;
-
     background:
         linear-gradient(
             180deg,
@@ -594,18 +470,11 @@ nav {
         );
 
     border: 1px solid rgba(255, 255, 255, 0.05);
-
     border-radius: 22px;
-
     overflow: hidden;
-
     cursor: pointer;
-
     position: relative;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.12);
-
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
     transition:
         transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
         box-shadow 0.35s ease,
@@ -614,28 +483,20 @@ nav {
 
 .song:hover {
     transform: translateY(-8px);
-
     border-color: rgba(34, 197, 94, 0.18);
-
     box-shadow:
         0 22px 45px rgba(0, 0, 0, 0.28),
         0 0 0 1px rgba(34, 197, 94, 0.04);
 }
 
-/* =========================================================
-   SONG IMAGE
-   ========================================================= */
+/* SONG IMAGE */
 
 .song img {
     width: 100%;
     aspect-ratio: 1 / 1;
-
     height: auto;
-
     object-fit: cover;
-
     background: #111827;
-
     transition:
         transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
         filter 0.5s ease;
@@ -646,9 +507,7 @@ nav {
     filter: brightness(1.06);
 }
 
-/* =========================================================
-   SONG CONTENT
-   ========================================================= */
+/* SONG CONTENT */
 
 .song-content {
     padding: 17px;
@@ -657,25 +516,18 @@ nav {
 .song-content h3 {
     font-size: 15px;
     font-weight: 600;
-
     line-height: 1.45;
-
     margin-bottom: 6px;
-
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-
     overflow: hidden;
 }
 
 .song-content p {
     color: #94a3b8;
-
     font-size: 13px;
-
     margin-bottom: 6px;
-
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -686,47 +538,33 @@ nav {
     font-size: 11px;
 }
 
-/* =========================================================
-   ACTIONS
-   ========================================================= */
+/* ACTIONS */
 
 .actions {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: 8px;
-
     margin-top: 16px;
 }
 
-/* =========================================================
-   ACTION BUTTONS
-   ========================================================= */
+/* ACTION BUTTONS */
 
 .play-btn,
 .favorite-btn,
 .download-btn {
     width: 44px;
     height: 44px;
-
     flex: 0 0 44px;
-
     border: none;
     border-radius: 13px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     color: #ffffff;
-
     text-decoration: none;
-
     font-size: 17px;
-
     cursor: pointer;
-
     transition:
         transform 0.25s ease,
         box-shadow 0.25s ease,
@@ -740,9 +578,7 @@ nav {
             #1476d1,
             #0f5fae
         );
-
-    box-shadow:
-        0 8px 18px rgba(20, 118, 209, 0.16);
+    box-shadow: 0 8px 18px rgba(20, 118, 209, 0.16);
 }
 
 .favorite-btn {
@@ -752,9 +588,7 @@ nav {
             #ef4444,
             #dc2626
         );
-
-    box-shadow:
-        0 8px 18px rgba(239, 68, 68, 0.13);
+    box-shadow: 0 8px 18px rgba(239, 68, 68, 0.13);
 }
 
 .download-btn {
@@ -764,9 +598,7 @@ nav {
             #22c55e,
             #15803d
         );
-
-    box-shadow:
-        0 8px 18px rgba(34, 197, 94, 0.14);
+    box-shadow: 0 8px 18px rgba(34, 197, 94, 0.14);
 }
 
 .play-btn:hover,
@@ -782,46 +614,32 @@ nav {
     transform: scale(0.94);
 }
 
-/* =========================================================
-   PLAYER
-   ========================================================= */
+/* PLAYER */
 
 .player {
     position: fixed;
-
     left: calc(260px + 20px);
     right: 20px;
     bottom: 16px;
-
     min-height: 82px;
-
     padding: 12px 18px;
-
     background:
         linear-gradient(
             135deg,
             rgba(15, 23, 42, 0.96),
             rgba(17, 24, 39, 0.94)
         );
-
     backdrop-filter: blur(22px);
     -webkit-backdrop-filter: blur(22px);
-
     border: 1px solid rgba(255, 255, 255, 0.07);
-
     border-radius: 22px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: 20px;
-
     z-index: 999;
-
     box-shadow:
         0 18px 55px rgba(0, 0, 0, 0.38);
-
     transition:
         transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
         opacity 0.35s ease;
@@ -833,33 +651,23 @@ nav {
     pointer-events: none;
 }
 
-/* =========================================================
-   PLAYER LEFT
-   ========================================================= */
+/* PLAYER LEFT */
 
 .player-left {
     min-width: 0;
-
     display: flex;
     align-items: center;
-
     gap: 14px;
-
     flex: 0 1 auto;
 }
 
-/* =========================================================
-   MUSIC DISC
-   ========================================================= */
+/* MUSIC DISC */
 
 .music-disc {
     width: 58px;
     height: 58px;
-
     flex: 0 0 58px;
-
     border-radius: 50%;
-
     background:
         radial-gradient(
             circle at center,
@@ -873,45 +681,31 @@ nav {
             #16a34a,
             #22c55e
         );
-
     position: relative;
-
-    box-shadow:
-        0 8px 25px rgba(34, 197, 94, 0.16);
+    box-shadow: 0 8px 25px rgba(34, 197, 94, 0.16);
 
     animation: spin 6s linear infinite;
-
     animation-play-state: paused;
 }
 
 .music-disc::before {
     content: "";
-
     position: absolute;
     inset: 6px;
-
     border-radius: 50%;
-
     border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .music-disc::after {
     content: "";
-
     width: 14px;
     height: 14px;
-
     background: #07111f;
-
     border: 3px solid #22c55e;
-
     border-radius: 50%;
-
     position: absolute;
-
     top: 50%;
     left: 50%;
-
     transform: translate(-50%, -50%);
 }
 
@@ -919,9 +713,7 @@ nav {
     animation-play-state: running;
 }
 
-/* =========================================================
-   MUSIC INFO
-   ========================================================= */
+/* MUSIC INFO */
 
 .music-info {
     min-width: 0;
@@ -929,12 +721,9 @@ nav {
 
 .music-info h3 {
     max-width: 300px;
-
     font-size: 15px;
     font-weight: 600;
-
     margin-bottom: 3px;
-
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -942,31 +731,23 @@ nav {
 
 .music-info p {
     max-width: 280px;
-
     font-size: 12px;
     color: #94a3b8;
-
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* =========================================================
-   AUDIO
-   ========================================================= */
+/* AUDIO */
 
 .player audio {
     width: min(420px, 42vw);
     min-width: 240px;
-
     height: 42px;
-
     accent-color: #22c55e;
 }
 
-/* =========================================================
-   ANIMATION
-   ========================================================= */
+/* ANIMATION */
 
 @keyframes spin {
     from {
@@ -978,45 +759,30 @@ nav {
     }
 }
 
-/* =========================================================
-   HAMBURGER
-   ========================================================= */
+/* HAMBURGER */
 
 .menu-toggle {
     display: none;
-
     position: fixed;
-
     top: 14px;
     left: 14px;
-
     width: 48px;
     height: 48px;
-
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 13px;
-
     background:
         linear-gradient(
             135deg,
             #22c55e,
             #15803d
         );
-
     color: #ffffff;
-
     font-size: 21px;
-
     cursor: pointer;
-
     z-index: 2000;
-
-    box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.25);
-
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
     align-items: center;
     justify-content: center;
-
     transition:
         transform 0.25s ease,
         box-shadow 0.25s ease;
@@ -1030,10 +796,7 @@ nav {
     transform: scale(0.94);
 }
 
-/* =========================================================
-   TABLETS / NOTEBOOKS
-   <= 1100px
-   ========================================================= */
+/* TABLETS / NOTEBOOKS <= 1100px*/
 
 @media (max-width: 1100px) {
 
@@ -1048,7 +811,6 @@ nav {
                 auto-fill,
                 minmax(200px, 1fr)
             );
-
         gap: 18px;
     }
 
@@ -1062,10 +824,7 @@ nav {
     }
 }
 
-/* =========================================================
-   TABLET
-   <= 900px
-   ========================================================= */
+/* TABLET <= 900px */
 
 @media (max-width: 900px) {
 
@@ -1077,17 +836,13 @@ nav {
 
     .sidebar {
         width: 270px;
-
         transform: translateX(-105%);
-
         box-shadow: none;
     }
 
     .sidebar.active {
         transform: translateX(0);
-
-        box-shadow:
-            15px 0 50px rgba(0, 0, 0, 0.35);
+        box-shadow: 15px 0 50px rgba(0, 0, 0, 0.35);
     }
 
     .menu-toggle {
@@ -1099,7 +854,6 @@ nav {
     .main-content {
         width: 100%;
         margin-left: 0;
-
         padding: 82px 22px 190px;
     }
 
@@ -1109,11 +863,8 @@ nav {
         left: 15px;
         right: 15px;
         bottom: 14px;
-
         min-height: 76px;
-
         padding: 11px 15px;
-
         border-radius: 20px;
     }
 
@@ -1125,17 +876,11 @@ nav {
 
     .songs-grid {
         grid-template-columns:
-            repeat(
-                auto-fill,
-                minmax(190px, 1fr)
-            );
+            repeat(auto-fill, minmax(190px, 1fr));
     }
 }
 
-/* =========================================================
-   MOBILE
-   <= 768px
-   ========================================================= */
+/* MOBILE <= 768px */
 
 @media (max-width: 768px) {
 
@@ -1154,7 +899,6 @@ nav {
 
     .topbar h1 {
         padding-right: 58px;
-
         font-size: clamp(24px, 7vw, 29px);
     }
 
@@ -1168,10 +912,8 @@ nav {
     .search-container {
         position: fixed;
         inset: 0;
-
         width: 100%;
         height: 100dvh;
-
         background:
             radial-gradient(
                 circle at 50% 20%,
@@ -1179,22 +921,16 @@ nav {
                 transparent 35%
             ),
             rgba(7, 17, 31, 0.985);
-
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-
         display: flex;
         flex-direction: column;
         justify-content: center;
-
         padding: 25px;
-
         z-index: 2500;
-
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-
         transition:
             opacity 0.3s ease,
             visibility 0.3s ease;
@@ -1208,7 +944,6 @@ nav {
 
     .close-search {
         display: flex;
-
         align-items: center;
         justify-content: center;
     }
@@ -1233,11 +968,7 @@ nav {
 
     .songs-grid {
         grid-template-columns:
-            repeat(
-                2,
-                minmax(0, 1fr)
-            );
-
+            repeat(2, minmax(0, 1fr));
         gap: 14px;
     }
 
@@ -1273,11 +1004,8 @@ nav {
     .download-btn {
         width: 40px;
         height: 40px;
-
         flex-basis: 40px;
-
         border-radius: 11px;
-
         font-size: 15px;
     }
 
@@ -1285,14 +1013,10 @@ nav {
 
     .player {
         flex-direction: column;
-
         align-items: stretch;
         justify-content: center;
-
         gap: 10px;
-
         padding: 12px 14px;
-
         min-height: auto;
     }
 
@@ -1304,7 +1028,6 @@ nav {
     .music-disc {
         width: 48px;
         height: 48px;
-
         flex-basis: 48px;
     }
 
@@ -1335,10 +1058,7 @@ nav {
     }
 }
 
-/* =========================================================
-   MOBILE PEQUENO
-   <= 560px
-   ========================================================= */
+/* MOBILE PEQUENO <= 560px */
 
 @media (max-width: 560px) {
 
@@ -1377,7 +1097,6 @@ nav {
     .download-btn {
         width: 38px;
         height: 38px;
-
         flex-basis: 38px;
     }
 
@@ -1385,15 +1104,11 @@ nav {
         left: 10px;
         right: 10px;
         bottom: 10px;
-
         border-radius: 18px;
     }
 }
 
-/* =========================================================
-   SMARTPHONES
-   <= 480px
-   ========================================================= */
+/* SMARTPHONES <= 480px */
 
 @media (max-width: 480px) {
 
@@ -1417,11 +1132,7 @@ nav {
 
     .songs-grid {
         grid-template-columns:
-            repeat(
-                2,
-                minmax(0, 1fr)
-            );
-
+            repeat(2, minmax(0, 1fr));
         gap: 11px;
     }
 
@@ -1455,11 +1166,8 @@ nav {
     .download-btn {
         width: 36px;
         height: 36px;
-
         flex-basis: 36px;
-
         border-radius: 10px;
-
         font-size: 14px;
     }
 
@@ -1482,10 +1190,7 @@ nav {
     }
 }
 
-/* =========================================================
-   TELEFONES MUITO PEQUENOS
-   <= 360px
-   ========================================================= */
+/* TELEFONES MUITO PEQUENOS <= 360px */
 
 @media (max-width: 360px) {
 
@@ -1515,9 +1220,7 @@ nav {
     .download-btn {
         width: 33px;
         height: 33px;
-
         flex-basis: 33px;
-
         font-size: 12px;
     }
 
@@ -1525,7 +1228,6 @@ nav {
         left: 7px;
         right: 7px;
         bottom: 7px;
-
         border-radius: 16px;
     }
 
@@ -1544,10 +1246,7 @@ nav {
     }
 }
 
-/* =========================================================
-   TELAS MUITO ESTREITAS
-   <= 320px
-   ========================================================= */
+/* TELAS MUITO ESTREITAS <= 320px */
 
 @media (max-width: 320px) {
 
@@ -1559,14 +1258,12 @@ nav {
     .song {
         display: grid;
         grid-template-columns: 105px 1fr;
-
         border-radius: 15px;
     }
 
     .song img {
         width: 105px;
         height: 105px;
-
         aspect-ratio: 1 / 1;
     }
 
@@ -1590,9 +1287,7 @@ nav {
     }
 }
 
-/* =========================================================
-   LANDSCAPE MOBILE
-   ========================================================= */
+/* LANDSCAPE MOBILE */
 
 @media (max-width: 900px) and (orientation: landscape) {
 
@@ -1618,23 +1313,17 @@ nav {
 
     .songs-grid {
         grid-template-columns:
-            repeat(
-                auto-fill,
-                minmax(170px, 1fr)
-            );
+            repeat(auto-fill, minmax(170px, 1fr));
     }
 }
 
-/* =========================================================
-   DISPOSITIVOS TOUCH
-   ========================================================= */
+/* DISPOSITIVOS TOUCH */
 
 @media (hover: none) and (pointer: coarse) {
 
     .song:hover {
         transform: none;
-        box-shadow:
-            0 10px 30px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
     }
 
     .song:hover img {
@@ -1658,9 +1347,7 @@ nav {
     }
 }
 
-/* =========================================================
-   REDUÇÃO DE MOVIMENTO
-   ========================================================= */
+/* REDUÇÃO DE MOVIMENTO */
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -1681,4 +1368,3 @@ nav {
         animation: none;
     }
 }
-
